@@ -32,3 +32,56 @@ p {
   85.7%  { color: violet; }
   100%   { color: red; }
 }
+
+
+/* Ngôi sao lấp lánh tạo bởi script.js */
+.sparkle {
+  position: fixed;
+  pointer-events: none; /* không chặn việc bấm vào chữ, nút bên dưới */
+  transform: translate(-50%, -50%);
+  animation: sparkle-fly 1s ease-out forwards;
+}
+
+@keyframes sparkle-fly {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  to {
+    opacity: 0;
+    /* bay lên trên và lệch sang trái/phải ngẫu nhiên (--dx) */
+    transform: translate(calc(-50% + var(--dx)), -150%) scale(0.3) rotate(180deg);
+  }
+}
+
+/* Người dùng bật "giảm chuyển động" trong hệ điều hành thì tắt hiệu ứng */
+@media (prefers-reduced-motion: reduce) {
+  .sparkle {
+    display: none;
+  }
+}
+
+
+/* Phần giới thiệu: ảnh + đoạn văn */
+.intro {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.intro img {
+  width: 100%;   /* ảnh co giãn theo màn hình, không tràn ra ngoài */
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.intro p {
+  line-height: 1.6;
+}
+
+.intro .photo-credit {
+  font-size: 12px;
+  color: #555;
+}
