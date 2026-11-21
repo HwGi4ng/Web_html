@@ -85,3 +85,66 @@ p {
   font-size: 12px;
   color: #555;
 }
+
+
+/* Tính năng "Hôm nay mặc gì?" */
+.outfit {
+  margin: 32px 0;
+  padding: 24px 16px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.outfit h2 {
+  margin-top: 0;
+  font-family: verdana;
+}
+
+#outfit-button {
+  font-size: 18px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff6b6b, #ffa94d, #845ef7);
+  color: white;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+#outfit-button:hover {
+  transform: scale(1.05);
+}
+
+#outfit-button:active {
+  transform: scale(0.95);
+}
+
+.outfit-result ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  text-align: left;
+  display: inline-block;
+}
+
+.outfit-result li {
+  font-size: 18px;
+  margin: 8px 0;
+}
+
+.outfit-comment {
+  font-weight: bold;
+  color: #845ef7;
+}
+
+/* Hiệu ứng nảy khi có gợi ý mới */
+.outfit-result.pop {
+  animation: pop 0.4s ease-out;
+}
+
+@keyframes pop {
+  0%   { transform: scale(0.8); opacity: 0; }
+  70%  { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
