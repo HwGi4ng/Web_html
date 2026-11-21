@@ -1,14 +1,23 @@
 body {
-  background-color: lightblue;
+  margin: 0;
+  font-family: "Be Vietnam Pro", verdana, sans-serif;
+  /* nền chuyển màu pastel, từ từ "trôi" (xem @keyframes bg-move bên dưới) */
+  background: linear-gradient(135deg, #a5d8ff, #fcc2d7, #d0bfff, #a5d8ff);
+  background-size: 400% 400%;
+  animation: bg-move 20s ease infinite;
+  min-height: 100vh;
 }
 
 h1 {
   color: white;
   text-align: center;
+  font-size: clamp(32px, 7vw, 56px); /* chữ to trên máy tính, tự nhỏ lại trên điện thoại */
+  font-weight: 800;
+  margin: 0;
+  padding: 32px 16px 24px;
 }
 
 p {
-  font-family: verdana;
   font-size: 20px;
 }
 
@@ -98,7 +107,6 @@ p {
 
 .outfit h2 {
   margin-top: 0;
-  font-family: verdana;
 }
 
 #outfit-button {
@@ -147,4 +155,65 @@ p {
   0%   { transform: scale(0.8); opacity: 0; }
   70%  { transform: scale(1.05); opacity: 1; }
   100% { transform: scale(1); }
+}
+
+
+/* ===== Trang trí nhỏ ===== */
+
+/* Nền chuyển màu trôi chậm */
+@keyframes bg-move {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Nội dung hiện dần lên khi mở trang */
+.intro {
+  animation: fade-up 0.8s ease-out both;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Ảnh phóng to nhẹ khi rê chuột */
+.intro img {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.intro img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* Footer với trái tim đập */
+.footer {
+  text-align: center;
+  padding: 24px 16px 32px;
+  font-size: 14px;
+  color: #444;
+}
+
+.heart {
+  display: inline-block;
+  color: #e64980;
+  animation: heartbeat 1.2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  15%      { transform: scale(1.3); }
+  30%      { transform: scale(1); }
+  45%      { transform: scale(1.2); }
+}
+
+/* Tắt các chuyển động trang trí nếu người xem bật "giảm chuyển động" */
+@media (prefers-reduced-motion: reduce) {
+  body, .intro, .heart {
+    animation: none;
+  }
+  .intro img:hover {
+    transform: none;
+  }
 }
