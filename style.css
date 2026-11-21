@@ -11,3 +11,24 @@ p {
   font-family: verdana;
   font-size: 20px;
 }
+
+/* Tiêu đề cầu vồng: mỗi chữ 1 màu, màu chạy liên tục */
+.rainbow span {
+  display: inline-block;
+  white-space: pre; /* giữ khoảng trắng giữa các từ */
+  animation: rainbow 3s linear infinite;
+  /* mỗi chữ lệch nhau 0.2s nên chữ cạnh nhau có màu khác nhau */
+  animation-delay: calc(var(--i) * -0.2s);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes rainbow {
+  0%     { color: red; }
+  14.3%  { color: orange; }
+  28.6%  { color: gold; }
+  42.9%  { color: green; }
+  57.1%  { color: blue; }
+  71.4%  { color: indigo; }
+  85.7%  { color: violet; }
+  100%   { color: red; }
+}

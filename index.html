@@ -3,13 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nonameyet</title>
+<title>Hahaha</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Thương hiệu thời trang</h1>
+<h1 class="rainbow">Thương hiệu thời trang</h1>
 <p>This is a paragraph.</p>
+
+<script>
+  // Tách tiêu đề thành từng chữ cái, mỗi chữ bọc trong 1 thẻ <span>
+  const title = document.querySelector(".rainbow");
+  const letters = [...title.textContent];
+  title.innerHTML = "";
+  letters.forEach((letter, i) => {
+    const span = document.createElement("span");
+    span.textContent = letter;
+    span.style.setProperty("--i", i); // số thứ tự chữ, dùng để lệch màu
+    title.appendChild(span);
+  });
+</script>
 
 </body>
 </html>
