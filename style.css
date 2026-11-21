@@ -4,7 +4,7 @@ body {
   /* nền chuyển màu pastel, từ từ "trôi" (xem @keyframes bg-move bên dưới) */
   background: linear-gradient(135deg, #a5d8ff, #fcc2d7, #d0bfff, #a5d8ff);
   background-size: 400% 400%;
-  animation: bg-move 20s ease infinite;
+  animation: bg-move 5s ease infinite;
   min-height: 100vh;
 }
 
@@ -199,32 +199,61 @@ p {
 
 /* ===== Tiêu đề "Today your fashion show" ===== */
 .site-title {
-  font-family: "Sniglet", cursive; /* font tròn trịa dễ thương (Google Fonts) */
+  font-family: "Gluten", cursive; /* font mềm như kẹo dẻo (Google Fonts) */
   font-weight: 800;
   letter-spacing: 1px;
-  /* Viền chữ màu tím đậm để chữ pastel vẫn nổi trên nền pastel */
+  /* Viền trắng dày 6px (vẽ bằng nhiều lớp bóng xếp thành vòng tròn cho mịn)
+     + bóng tím mờ bên ngoài để chữ nổi trên nền pastel */
   text-shadow:
-    -2px -2px 0 #4c2a85,
-     2px -2px 0 #4c2a85,
-    -2px  2px 0 #4c2a85,
-     2px  2px 0 #4c2a85,
-     0    4px 8px rgba(76, 42, 133, 0.4);
-  /* Màu chữ đổi theo nền: cùng chu kỳ 20s với bg-move,
+    6px 0px 0 #fff,
+    5.5px 2.3px 0 #fff,
+    4.2px 4.2px 0 #fff,
+    2.3px 5.5px 0 #fff,
+    0px 6px 0 #fff,
+    -2.3px 5.5px 0 #fff,
+    -4.2px 4.2px 0 #fff,
+    -5.5px 2.3px 0 #fff,
+    -6px 0px 0 #fff,
+    -5.5px -2.3px 0 #fff,
+    -4.2px -4.2px 0 #fff,
+    -2.3px -5.5px 0 #fff,
+    -0px -6px 0 #fff,
+    2.3px -5.5px 0 #fff,
+    4.2px -4.2px 0 #fff,
+    5.5px -2.3px 0 #fff,
+    3px 0px 0 #fff,
+    2.8px 1.1px 0 #fff,
+    2.1px 2.1px 0 #fff,
+    1.1px 2.8px 0 #fff,
+    0px 3px 0 #fff,
+    -1.1px 2.8px 0 #fff,
+    -2.1px 2.1px 0 #fff,
+    -2.8px 1.1px 0 #fff,
+    -3px 0px 0 #fff,
+    -2.8px -1.1px 0 #fff,
+    -2.1px -2.1px 0 #fff,
+    -1.1px -2.8px 0 #fff,
+    -0px -3px 0 #fff,
+    1.1px -2.8px 0 #fff,
+    2.1px -2.1px 0 #fff,
+    2.8px -1.1px 0 #fff,
+    0 10px 16px rgba(76, 42, 133, 0.5);
+  /* Màu chữ đổi cùng nhịp với nền (bg-move, 5 giây),
      luôn là màu pastel đối (bù) với màu nền lúc đó */
-  animation: title-color 20s ease infinite;
+  animation: title-color 5s ease infinite;
 }
 
 @keyframes title-color {
-  0%   { color: #ffd8a8; } /* nền xanh dương nhạt -> chữ cam đào */
-  25%  { color: #b2f2bb; } /* nền hồng            -> chữ xanh bạc hà */
-  50%  { color: #fff3bf; } /* nền tím nhạt         -> chữ vàng kem */
-  75%  { color: #b2f2bb; } /* nền hồng            -> chữ xanh bạc hà */
-  100% { color: #ffd8a8; } /* quay lại xanh dương -> cam đào */
+  0%   { color: #ffc078; } /* nền xanh dương nhạt -> chữ cam đào */
+  25%  { color: #8ce99a; } /* nền hồng            -> chữ xanh bạc hà */
+  50%  { color: #ffd43b; } /* nền tím nhạt         -> chữ vàng kem */
+  75%  { color: #8ce99a; } /* nền hồng            -> chữ xanh bạc hà */
+  100% { color: #ffc078; } /* quay lại xanh dương -> cam đào */
 }
 
 @media (prefers-reduced-motion: reduce) {
   .site-title {
     animation: none;
-    color: #ffd8a8;
+    color: #ffc078;
   }
 }
