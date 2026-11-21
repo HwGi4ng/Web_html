@@ -6,13 +6,13 @@
 <title>Hahaha</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;700;800&family=Sniglet:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="script.js" defer></script>
 </head>
 <body>
 
-<h1 class="rainbow">Thương hiệu thời trang</h1>
+<h1 class="site-title">Today your fashion show</h1>
 <main class="intro">
   <img src="images/cua-hang.jpg" alt="Giá treo áo len và áo khoác tông màu be, nâu">
   <p>Chào mừng bạn đến với <strong>Hahaha</strong> – nơi thời trang không cần quá nghiêm túc!
@@ -32,18 +32,6 @@
   Made with <span class="heart">❤</span> by Hahaha · © 2026
 </footer>
 
-<script>
-  // Tách tiêu đề thành từng chữ cái, mỗi chữ bọc trong 1 thẻ <span>
-  const title = document.querySelector(".rainbow");
-  const letters = [...title.textContent];
-  title.innerHTML = "";
-  letters.forEach((letter, i) => {
-    const span = document.createElement("span");
-    span.textContent = letter;
-    span.style.setProperty("--i", i); // số thứ tự chữ, dùng để lệch màu
-    title.appendChild(span);
-  });
-</script>
 
 </body>
 </html>
