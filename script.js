@@ -258,15 +258,19 @@ function showView() {
 
   if (product) {
     renderDetail(product);
-    window.scrollTo(0, 0);
-    return;
-  }
-
-  if (category && category !== currentCategory) {
+  } else if (category && category !== currentCategory) {
     currentCategory = category;
     activeFilter = {};
     renderFilters();
     renderProducts();
+  }
+
+  // Bấm "Quay lại": cuộn về đúng chỗ đang xem dở. Mở sản phẩm mới: lên đầu trang.
+  if (restoreScroll) {
+    restoreScroll = false;
+    window.scrollTo(0, scrollPositions[location.hash || "#trang-chu"] || 0);
+  } else if (product) {
+    window.scrollTo(0, 0);
   }
 }
 
@@ -432,6 +436,29 @@ function renderDetail(p) {
     )
     .join("");
 }
+
+// ===== Nút "← Quay lại" =====
+// Nhớ vị trí cuộn của từng trang để quay lại đúng chỗ đang xem dở.
+const scrollPositions = {};
+let visitedInside = false;  // đã chuyển trang bên trong website chưa
+let restoreScroll = false;  // lần chuyển trang này là do bấm "Quay lại"
+
+window.addEventListener("hashchange", (event) => {
+  const oldHash = new URL(event.oldURL).hash || "#trang-chu";
+  scrollPositions[oldHash] = window.scrollY;
+  visitedInside = true;
+});
+
+document.getElementById("detail-back").addEventListener("click", () => {
+  restoreScroll = true;
+  if (visitedInside) {
+    history.back(); // về đúng trang trước đó
+  } else {
+    // mở thẳng link sản phẩm: không có trang trước trong website -> về danh mục
+    const product = findProduct(location.hash.slice("#san-pham/".length));
+    location.hash = "#" + (product ? product.category : "trang-chu");
+  }
+});
 
 detailAdd.addEventListener("click", () => {
   addToCart(detailAdd.dataset.id);

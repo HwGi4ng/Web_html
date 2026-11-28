@@ -594,11 +594,20 @@ a.product-body:focus-visible {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 280px;
   grid-template-areas:
+    "back  ."
     "media side"
     "info  side";
   gap: var(--gap);
   align-items: start;
   animation: fade-up 0.5s ease-out both;
+}
+
+/* Nút "← Quay lại" */
+.detail-back {
+  grid-area: back;
+  justify-self: start;
+  margin-bottom: calc(var(--gap) * -0.5); /* đứng sát ô ảnh hơn */
+  box-shadow: 0 2px 6px rgba(5, 58, 43, 0.15);
 }
 
 .detail-media {
@@ -756,6 +765,7 @@ a.product-body:focus-visible {
   .detail {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
+      "back"
       "media"
       "info"
       "side";
