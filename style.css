@@ -573,6 +573,150 @@ button.avatar:focus-visible {
   display: none;
 }
 
+/* ===== Trang Hỗ trợ ===== */
+.support {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  animation: fade-up 0.5s ease-out both;
+}
+
+.support-intro,
+.support-section {
+  padding: 20px 24px;
+}
+
+.support-intro p {
+  margin: 6px 0 0;
+}
+
+.support-section h2 {
+  margin: 0 0 16px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.support-section h3 {
+  margin: 20px 0 10px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.policy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.policy-card {
+  padding: 16px 20px;
+  background-color: var(--veltra-white);
+  border-radius: var(--radius-md);
+}
+
+.policy-card h3 {
+  margin: 0 0 8px;
+}
+
+.policy-card ul {
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.7;
+}
+
+/* Câu hỏi thường gặp: bấm để mở câu trả lời */
+.faq {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.faq details {
+  background-color: var(--veltra-white);
+  border-radius: var(--radius-md);
+}
+
+.faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: var(--tap);
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq summary::after {
+  content: "+";
+  flex: none;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  color: var(--veltra-white);
+  background-color: var(--veltra-green);
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.faq details[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq details p {
+  margin: 0;
+  padding: 0 16px 14px;
+  line-height: 1.7;
+}
+
+/* Bảng size */
+.table-wrap {
+  overflow-x: auto; /* bảng rộng thì vuốt ngang trên điện thoại */
+  background-color: var(--veltra-white);
+  border-radius: var(--radius-md);
+}
+
+.size-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.size-table th,
+.size-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--veltra-gray);
+}
+
+.size-table thead th {
+  color: var(--veltra-white);
+  background-color: var(--veltra-green);
+  font-weight: 600;
+}
+
+.size-table tbody th {
+  font-weight: 700;
+}
+
+.size-table tbody tr:last-child th,
+.size-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.size-tip {
+  margin: 12px 0 0;
+  font-size: 14px;
+}
+
 /* Thẻ sản phẩm là link mở trang chi tiết */
 a.product-body {
   text-decoration: none;
@@ -761,6 +905,14 @@ a.product-body:focus-visible {
 .buy-actions button {
   min-height: 52px;
   font-size: 16px;
+}
+
+.size-guide-link {
+  align-self: flex-start;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--veltra-green);
+  text-underline-offset: 3px;
 }
 
 /* Cột gợi ý */
@@ -1417,6 +1569,7 @@ a.product-body:focus-visible {
 
 /* ===== Người xem bật "giảm chuyển động": tắt hiệu ứng ===== */
 @media (prefers-reduced-motion: reduce) {
+  .support,
   .detail,
   .hero,
   .home-section,

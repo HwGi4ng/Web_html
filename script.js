@@ -102,15 +102,11 @@ const CATEGORIES = {
       { key: "color", label: "Màu" },
     ],
   },
-  "my-pham": {
-    label: "Mỹ phẩm",
-    filters: [{ key: "kind", label: "Loại" }],
-  },
-  "trang-suc": {
-    label: "Trang sức",
+  "nhieu-hon": {
+    label: "Nhiều hơn thế",
     filters: [
       { key: "kind", label: "Loại" },
-      { key: "material", label: "Chất liệu" },
+      { key: "color", label: "Màu" },
     ],
   },
 };
@@ -127,6 +123,7 @@ const COLORS = {
   hong:  { label: "Hồng",    hex: "#E8B4A6" },
   vang:  { label: "Vàng",    hex: "#D4B04C" },
   xanh:  { label: "Xanh",    hex: "#4A6E8F" },
+  nhieu: { label: "Nhiều màu", hex: "linear-gradient(135deg, #C0392B, #D4B04C, #4A6E8F)" },
 };
 
 const SHOE_SIZES = (from, to) =>
@@ -158,21 +155,13 @@ const PRODUCTS = [
   { id: "giay-monk-nau",    category: "giay-dep", name: "Giày monk strap da",         price: 1090000, type: "giay", color: "nau",   sizes: SHOE_SIZES(39, 43), isNew: false, alt: "Đôi giày da nâu khóa monk strap trên sàn gỗ" },
   { id: "cao-got-hoa-tiet", category: "giay-dep", name: "Cao gót họa tiết nhiệt đới", price: 750000,  type: "giay", color: "xanh",  sizes: SHOE_SIZES(35, 39), isNew: false, alt: "Đôi giày cao gót họa tiết lá nhiệt đới trên nền xanh" },
 
-  // Mỹ phẩm
-  { id: "serum-duong-am",    category: "my-pham", name: "Serum dưỡng ẩm",      price: 420000, kind: "Dưỡng da",   isNew: true,  alt: "Lọ serum thủy tinh trắng nắp vàng trên đá cẩm thạch" },
-  { id: "bang-phan-mat",     category: "my-pham", name: "Bảng phấn mắt 6 màu", price: 365000, kind: "Trang điểm", isNew: false, alt: "Tay cầm bảng phấn mắt tông nâu hồng và cọ trang điểm" },
-  { id: "tinh-dau-duong-da", category: "my-pham", name: "Tinh dầu dưỡng da",   price: 390000, kind: "Dưỡng da",   isNew: false, alt: "Lọ tinh dầu thủy tinh màu hổ phách trên kệ gỗ" },
-  { id: "kem-duong-gel",     category: "my-pham", name: "Kem dưỡng dạng gel",  price: 450000, kind: "Dưỡng da",   isNew: false, alt: "Hai tay cầm hũ kem dưỡng dạng gel màu xanh nhạt" },
-  { id: "son-thoi-hong-dat", category: "my-pham", name: "Son thỏi hồng đất",   price: 290000, kind: "Trang điểm", isNew: true,  alt: "Thỏi son màu hồng đất bên cạnh nắp son" },
-  { id: "mascara-dai-mi",    category: "my-pham", name: "Mascara dài mi",      price: 250000, kind: "Trang điểm", isNew: false, alt: "Cây mascara và đầu chải trên nền hồng" },
-
-  // Trang sức
-  { id: "vong-ngoc-trai",      category: "trang-suc", name: "Vòng cổ ngọc trai",   price: 1450000, kind: "Dây chuyền", material: "Ngọc trai", isNew: false, alt: "Chuỗi vòng cổ ngọc trai trong hộp trang sức" },
-  { id: "bong-tai-da-xanh",    category: "trang-suc", name: "Bông tai đá xanh",    price: 890000,  kind: "Bông tai",   material: "Bạc",       isNew: true,  alt: "Đôi bông tai bạc đính đá xanh trên lá cây" },
-  { id: "day-chuyen-trai-tim", category: "trang-suc", name: "Dây chuyền trái tim", price: 650000,  kind: "Dây chuyền", material: "Bạc",       isNew: false, alt: "Dây chuyền bạc mặt trái tim đính đá trên nền trắng" },
-  { id: "nhan-kim-cuong",      category: "trang-suc", name: "Nhẫn đính đá halo",   price: 1890000, kind: "Nhẫn",       material: "Bạc",       isNew: false, alt: "Nhẫn bạc đính đá kiểu halo trên nền tối" },
-  { id: "lac-tay-vang-hong",   category: "trang-suc", name: "Lắc tay vàng hồng",   price: 790000,  kind: "Lắc tay",    material: "Vàng",      isNew: false, alt: "Lắc tay vàng hồng họa tiết đan trên nền hồng" },
-  { id: "bong-tai-vang",       category: "trang-suc", name: "Bông tai vàng xoắn",  price: 560000,  kind: "Bông tai",   material: "Vàng",      isNew: true,  alt: "Đôi bông tai vàng xoắn bên viên đá trắng" },
+  // Nhiều hơn thế
+  { id: "khan-len-soc",    category: "nhieu-hon", name: "Khăn len sọc tua rua", price: 249000, kind: "Khăn",      color: "nhieu", isNew: true,  alt: "Khăn len sọc nhiều màu có tua rua trên nền tối" },
+  { id: "that-lung-da",    category: "nhieu-hon", name: "Thắt lưng da bò",      price: 390000, kind: "Thắt lưng", color: "nau",   isNew: false, alt: "Thắt lưng da màu nâu bò với khóa kim loại bạc" },
+  { id: "vi-da-nau",       category: "nhieu-hon", name: "Ví da gập đôi",        price: 450000, kind: "Ví",        color: "nau",   isNew: false, alt: "Ví da nâu gập đôi trên nền xanh xám" },
+  { id: "tat-hoa-tiet",    category: "nhieu-hon", name: "Tất họa tiết môi đỏ",  price: 89000,  kind: "Tất",       color: "trang", isNew: true,  alt: "Đôi chân mang tất trắng họa tiết đôi môi đỏ" },
+  { id: "tui-tote-canvas", category: "nhieu-hon", name: "Túi tote màu kraft",   price: 129000, kind: "Túi",       color: "kem",   isNew: false, alt: "Túi tote màu nâu kraft quai dài trên nền trắng" },
+  { id: "mu-fedora",       category: "nhieu-hon", name: "Mũ fedora vành rộng",  price: 320000, kind: "Mũ",        color: "nhieu", isNew: false, alt: "Nhiều chiếc mũ fedora vành rộng đủ màu treo trên tường" },
 ];
 
 // Mô tả hiện ở trang chi tiết sản phẩm
@@ -198,19 +187,12 @@ const DESCRIPTIONS = {
   "giay-monk-nau":    "Giày monk strap da nâu với hai khóa cài, đế da thủ công. Lịch lãm cho công sở và tiệc tối.",
   "cao-got-hoa-tiet": "Giày cao gót họa tiết lá nhiệt đới rực rỡ, gót 9cm. Làm bừng sáng một bộ trang phục đơn sắc.",
 
-  "serum-duong-am":    "Serum cấp ẩm với hyaluronic acid, kết cấu mỏng nhẹ, thấm nhanh. Dùng sáng và tối trước kem dưỡng. 30ml.",
-  "bang-phan-mat":     "Bảng phấn mắt 6 màu tông nâu hồng, có cả lì và nhũ. Bám màu lâu, dễ tán cho cả người mới.",
-  "tinh-dau-duong-da": "Tinh dầu dưỡng da từ jojoba và hoa hồng, giúp da mềm mịn, căng bóng. Thoa 2–3 giọt vào buổi tối. 30ml.",
-  "kem-duong-gel":     "Kem dưỡng dạng gel mát lạnh, cấp nước và làm dịu da. Không gây bết dính, hợp với da dầu. 50ml.",
-  "son-thoi-hong-dat": "Son thỏi màu hồng đất, chất son lì mịn nhưng không khô môi. Màu tự nhiên, hợp đi học và đi làm.",
-  "mascara-dai-mi":    "Mascara làm dài và cong mi, chống lem và chống nước. Đầu chải mảnh, chuốt tới từng sợi mi nhỏ.",
-
-  "vong-ngoc-trai":      "Vòng cổ ngọc trai nước ngọt, hạt tròn đều 7mm, khóa bạc 925. Cổ điển và thanh lịch, kèm hộp quà.",
-  "bong-tai-da-xanh":    "Bông tai bạc 925 đính đá xanh sapphire tổng hợp, viền đá trắng lấp lánh. Nổi bật cho những buổi tiệc.",
-  "day-chuyen-trai-tim": "Dây chuyền bạc 925 mặt trái tim đính đá, dây mảnh dài 45cm. Món quà nhỏ xinh cho người thương.",
-  "nhan-kim-cuong":      "Nhẫn bạc 925 đính đá cubic zirconia kiểu halo, lấp lánh như kim cương. Có đủ size từ 6 đến 9.",
-  "lac-tay-vang-hong":   "Lắc tay mạ vàng hồng họa tiết đan xen tinh tế, khóa chắc chắn. Đeo riêng hoặc mix cùng đồng hồ.",
-  "bong-tai-vang":       "Bông tai vòng xoắn mạ vàng 18K, nhẹ và không gây ngứa. Phù hợp đeo hằng ngày.",
+  "khan-len-soc":    "Khăn len đan sọc nhiều màu với tua rua hai đầu, dài 180cm. Ấm áp mà vẫn nổi bật trong những ngày se lạnh.",
+  "that-lung-da":    "Thắt lưng da bò nguyên tấm bản 3,5cm, khóa kim loại không gỉ. Hợp với quần jean lẫn quần tây.",
+  "vi-da-nau":       "Ví da gập đôi mỏng gọn, 6 ngăn thẻ và 1 ngăn tiền. Da càng dùng càng lên màu đẹp.",
+  "tat-hoa-tiet":    "Tất cotton cổ cao họa tiết đôi môi đỏ vui nhộn, co giãn tốt, thấm hút mồ hôi. Free size.",
+  "tui-tote-canvas": "Túi tote màu kraft tối giản, quai dài đeo vai, đựng vừa laptop 13 inch. Nhẹ và tiện cho đi học, đi chợ.",
+  "mu-fedora":       "Mũ fedora vành rộng đan cói, có nhiều màu để chọn. Che nắng tốt, hợp đi biển và dạo phố.",
 };
 
 function findProduct(id) {
@@ -230,22 +212,27 @@ function valuesOf(product, key) {
 const viewHome = document.getElementById("view-home");
 const viewShop = document.getElementById("view-shop");
 const viewDetail = document.getElementById("view-detail");
+const viewSupport = document.getElementById("view-support");
 let currentCategory = null;
 
 // Địa chỉ trang:
+//   #ho-tro               -> Hỗ trợ (#ho-tro/bang-size: cuộn tới bảng size)
 //   #trang-chu            -> Trang chủ
-//   #quan-ao, #my-pham... -> trang danh mục
+//   #quan-ao, #nhieu-hon... -> trang danh mục
 //   #san-pham/<id>        -> chi tiết 1 sản phẩm
 function showView() {
   const hash = location.hash.slice(1);
   const product = hash.startsWith("san-pham/") ? findProduct(hash.slice("san-pham/".length)) : null;
   const category = CATEGORIES[hash] ? hash : null;
+  // #ho-tro hoặc #ho-tro/bang-size (mở Hỗ trợ và cuộn tới bảng size)
+  const support = hash === "ho-tro" || hash.startsWith("ho-tro/");
   // menu sáng ở danh mục của sản phẩm khi đang xem chi tiết
-  const current = product ? product.category : category || "trang-chu";
+  const current = product ? product.category : category || (support ? "ho-tro" : "trang-chu");
 
-  viewHome.hidden = Boolean(category || product);
+  viewHome.hidden = Boolean(category || product || support);
   viewShop.hidden = !category;
   viewDetail.hidden = !product;
+  viewSupport.hidden = !support;
   document.title = product ? `${product.name} – Veltra Atelier` : "Veltra Atelier";
 
   document.querySelectorAll(".nav a").forEach((link) => {
@@ -269,6 +256,8 @@ function showView() {
   if (restoreScroll) {
     restoreScroll = false;
     window.scrollTo(0, scrollPositions[location.hash || "#trang-chu"] || 0);
+  } else if (support && hash.includes("/")) {
+    document.getElementById(hash.split("/")[1])?.scrollIntoView();
   } else {
     window.scrollTo(0, 0);
   }
@@ -784,7 +773,7 @@ const OUTFIT_SLOTS = [
   { label: "Quần áo",   category: "quan-ao" },
   { label: "Giày dép",  category: "giay-dep" },
   { label: "Phụ kiện",  category: "phu-kien" },
-  { label: "Trang sức", category: "trang-suc" },
+  { label: "Nhiều hơn thế", category: "nhieu-hon" },
 ];
 
 const OUTFIT_COMMENTS = [

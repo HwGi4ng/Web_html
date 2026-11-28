@@ -47,8 +47,8 @@
       <a href="#quan-ao" data-view="quan-ao">Quần áo</a>
       <a href="#phu-kien" data-view="phu-kien">Phụ kiện</a>
       <a href="#giay-dep" data-view="giay-dep">Giày dép</a>
-      <a href="#my-pham" data-view="my-pham">Mỹ phẩm</a>
-      <a href="#trang-suc" data-view="trang-suc">Trang sức</a>
+      <a href="#nhieu-hon" data-view="nhieu-hon">Nhiều hơn thế</a>
+      <a href="#ho-tro" data-view="ho-tro" class="nav-support">Hỗ trợ</a>
     </nav>
   </aside>
 
@@ -61,7 +61,7 @@
           <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/>
           <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
         </svg>
-        <input id="search" type="search" placeholder="Tìm trong tất cả sản phẩm... (ví dụ: túi, son)" aria-label="Tìm sản phẩm">
+        <input id="search" type="search" placeholder="Tìm trong tất cả sản phẩm... (ví dụ: túi, giày)" aria-label="Tìm sản phẩm">
       </label>
       <button id="cart-button" class="cart-button" aria-label="Giỏ hàng, 0 sản phẩm">
         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
@@ -77,8 +77,8 @@
       <section class="hero">
         <h1 class="site-title">Today your fashion show</h1>
         <p class="hero-text">Chào mừng bạn đến với <strong>Veltra Atelier</strong> – nơi mỗi bộ trang phục là
-        một buổi trình diễn của riêng bạn. Quần áo, giày dép, phụ kiện, mỹ phẩm và trang sức được chọn lọc
-        để bạn đẹp mỗi ngày mà vẫn luôn thoải mái.</p>
+        một buổi trình diễn của riêng bạn. Quần áo, giày dép, phụ kiện và nhiều món đồ xinh xắn khác được
+        chọn lọc để bạn đẹp mỗi ngày mà vẫn luôn thoải mái.</p>
       </section>
 
       <!-- Hàng mới về -->
@@ -149,6 +149,7 @@
           <fieldset id="buy-sizes" class="buy-field">
             <legend class="buy-label">Chọn size</legend>
             <div id="buy-size-options" class="chips"></div>
+            <a class="size-guide-link" href="#ho-tro/bang-size">Không chắc size? Xem bảng size</a>
           </fieldset>
 
           <div class="buy-field">
@@ -174,6 +175,104 @@
         <h2 id="suggest-title">Gợi ý cho bạn</h2>
         <ul id="suggest-list" class="suggest-list"></ul>
       </aside>
+    </main>
+
+    <!-- ===== Hỗ trợ ===== -->
+    <main id="view-support" class="view support" hidden>
+      <section class="panel support-intro">
+        <h1 class="shop-title">Hỗ trợ</h1>
+        <p>Thông tin giao hàng, đổi trả, câu hỏi thường gặp và bảng size của Veltra Atelier.</p>
+      </section>
+
+      <!-- Giao hàng & đổi trả -->
+      <section id="giao-hang" class="panel support-section" aria-labelledby="ship-title">
+        <h2 id="ship-title">Chính sách giao hàng &amp; đổi trả</h2>
+        <div class="policy-grid">
+          <div class="policy-card">
+            <h3>🚚 Giao hàng</h3>
+            <ul>
+              <li><strong>Miễn phí giao hàng</strong> cho đơn từ 500.000đ. Đơn dưới 500.000đ phí 30.000đ.</li>
+              <li>Nội thành: nhận hàng trong <strong>1–2 ngày</strong>.</li>
+              <li>Các tỉnh khác: nhận hàng trong <strong>3–5 ngày</strong>.</li>
+              <li>Được kiểm tra hàng trước khi thanh toán (COD).</li>
+            </ul>
+          </div>
+          <div class="policy-card">
+            <h3>↺ Đổi trả</h3>
+            <ul>
+              <li>Đổi hoặc trả trong <strong>7 ngày</strong> kể từ khi nhận hàng.</li>
+              <li>Sản phẩm còn nguyên tem mác, chưa qua sử dụng hay giặt.</li>
+              <li><strong>Đổi size miễn phí 1 lần</strong> cho mỗi đơn.</li>
+              <li>Không áp dụng đổi trả với tất và hàng giảm giá trên 50%.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Câu hỏi thường gặp -->
+      <section id="cau-hoi" class="panel support-section" aria-labelledby="faq-title">
+        <h2 id="faq-title">Câu hỏi thường gặp</h2>
+        <div class="faq">
+          <details>
+            <summary>Làm sao để đặt hàng?</summary>
+            <p>Bấm vào sản phẩm bạn thích, chọn size và số lượng rồi bấm <strong>Mua ngay</strong>.
+            Hoặc bấm <strong>Thêm vào giỏ</strong> để mua nhiều món cùng lúc, sau đó mở giỏ hàng và bấm <strong>Đặt hàng</strong>.</p>
+          </details>
+          <details>
+            <summary>Tôi nên chọn size nào?</summary>
+            <p>Bạn xem <strong>bảng size</strong> ngay bên dưới. Nếu số đo nằm giữa hai size, hãy chọn size lớn hơn để mặc thoải mái.</p>
+          </details>
+          <details>
+            <summary>Bao lâu thì tôi nhận được hàng?</summary>
+            <p>Nội thành 1–2 ngày, các tỉnh khác 3–5 ngày kể từ khi đơn được xác nhận.</p>
+          </details>
+          <details>
+            <summary>Tôi có được kiểm tra hàng trước khi trả tiền không?</summary>
+            <p>Có. Với đơn thanh toán khi nhận hàng (COD), bạn được mở hộp kiểm tra trước khi thanh toán.</p>
+          </details>
+          <details>
+            <summary>Tôi muốn hủy hoặc sửa đơn hàng thì làm thế nào?</summary>
+            <p>Bạn liên hệ với shop trong vòng 24 giờ sau khi đặt, kèm mã đơn hàng (ví dụ VLT-090DRG) để được hỗ trợ.</p>
+          </details>
+          <details>
+            <summary>Tắt trang thì giỏ hàng có bị mất không?</summary>
+            <p>Không. Giỏ hàng được lưu trên trình duyệt của bạn, mở lại trang vẫn còn. Nếu bạn dùng tab ẩn danh hoặc đổi máy thì giỏ sẽ trống.</p>
+          </details>
+        </div>
+      </section>
+
+      <!-- Bảng size -->
+      <section id="bang-size" class="panel support-section" aria-labelledby="size-title">
+        <h2 id="size-title">Bảng size</h2>
+
+        <h3>Quần áo</h3>
+        <div class="table-wrap">
+          <table class="size-table">
+            <thead>
+              <tr><th scope="col">Size</th><th scope="col">Chiều cao (cm)</th><th scope="col">Cân nặng (kg)</th><th scope="col">Vòng ngực (cm)</th><th scope="col">Vòng eo (cm)</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">S</th><td>150–160</td><td>45–52</td><td>80–84</td><td>62–66</td></tr>
+              <tr><th scope="row">M</th><td>160–167</td><td>52–60</td><td>84–88</td><td>66–70</td></tr>
+              <tr><th scope="row">L</th><td>167–173</td><td>60–68</td><td>88–94</td><td>70–76</td></tr>
+              <tr><th scope="row">XL</th><td>173–180</td><td>68–78</td><td>94–100</td><td>76–82</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Giày dép</h3>
+        <div class="table-wrap">
+          <table class="size-table">
+            <thead>
+              <tr><th scope="col">Size</th><th>35</th><th>36</th><th>37</th><th>38</th><th>39</th><th>40</th><th>41</th><th>42</th><th>43</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Dài bàn chân (cm)</th><td>22,0</td><td>22,5</td><td>23,5</td><td>24,0</td><td>24,5</td><td>25,5</td><td>26,0</td><td>26,5</td><td>27,5</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="size-tip">Cách đo chân: đặt bàn chân lên tờ giấy, đánh dấu điểm gót và đầu ngón dài nhất rồi đo khoảng cách giữa hai điểm.</p>
+      </section>
     </main>
 
     <footer class="footer">
