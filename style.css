@@ -573,6 +573,211 @@ button.avatar:focus-visible {
   display: none;
 }
 
+/* Thẻ sản phẩm là link mở trang chi tiết */
+a.product-body {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a.product-body:focus-visible {
+  outline-color: var(--veltra-lime);
+  outline-offset: -4px;
+}
+
+/* ===== Trang chi tiết sản phẩm =====
+   ┌──────────────┬───────┐
+   │  ảnh (media) │ gợi ý │
+   ├──────────────┤ (side)│
+   │  giá + info  │       │
+   └──────────────┴───────┘ */
+.detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  grid-template-areas:
+    "media side"
+    "info  side";
+  gap: var(--gap);
+  align-items: start;
+  animation: fade-up 0.5s ease-out both;
+}
+
+.detail-media {
+  grid-area: media;
+  padding: 16px;
+}
+
+.detail-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(300px, 52vh, 520px);
+  overflow: hidden;
+  background-color: var(--veltra-forest);
+  border-radius: var(--radius-lg);
+}
+
+/* Ảnh hiện trọn vẹn trong ô xanh, không bị cắt */
+.detail-image img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.detail-info {
+  grid-area: info;
+  padding: 20px 24px;
+}
+
+.detail-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.detail-price {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--veltra-forest);
+}
+
+.detail-name {
+  margin: 12px 0 6px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.detail-name .tag {
+  margin-left: 8px;
+  padding: 1px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--veltra-white);
+  background-color: var(--veltra-green);
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
+.detail-desc {
+  margin: 0 0 14px;
+  line-height: 1.7;
+}
+
+.detail-specs {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 16px;
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(5, 58, 43, 0.2);
+  font-size: 15px;
+}
+
+.detail-specs dt {
+  font-weight: 600;
+}
+
+.detail-specs dd {
+  margin: 0;
+}
+
+/* Cột gợi ý */
+.detail-side {
+  grid-area: side;
+  position: sticky;
+  top: var(--gap);
+  padding: 20px 16px;
+}
+
+.detail-side h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.suggest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.suggest-item {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 12px;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 8px;
+  color: var(--veltra-white);
+  text-decoration: none;
+  background-color: var(--veltra-forest);
+  border-radius: var(--radius-md);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.suggest-item:hover {
+  transform: translateX(-4px);
+  background-color: var(--veltra-forest-2);
+}
+
+.suggest-item:focus-visible {
+  outline-offset: 2px;
+}
+
+.suggest-item img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.suggest-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.suggest-price {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--veltra-sage);
+}
+
+@media (max-width: 1050px) {
+  .detail {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "media"
+      "info"
+      "side";
+  }
+  .detail-side {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .detail-image {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+  .detail-info {
+    padding: 16px;
+  }
+  .detail-price {
+    font-size: 26px;
+  }
+}
+
 /* ===== Trang chủ ===== */
 .site-title {
   margin: 0;
@@ -1000,6 +1205,7 @@ button.avatar:focus-visible {
 
 /* ===== Người xem bật "giảm chuyển động": tắt hiệu ứng ===== */
 @media (prefers-reduced-motion: reduce) {
+  .detail,
   .hero,
   .home-section,
   .heart,

@@ -175,6 +175,44 @@ const PRODUCTS = [
   { id: "bong-tai-vang",       category: "trang-suc", name: "Bông tai vàng xoắn",  price: 560000,  kind: "Bông tai",   material: "Vàng",      isNew: true,  alt: "Đôi bông tai vàng xoắn bên viên đá trắng" },
 ];
 
+// Mô tả hiện ở trang chi tiết sản phẩm
+const DESCRIPTIONS = {
+  "ao-len-moc":    "Áo choàng len móc tay dáng poncho, sợi cotton mềm màu kem. Khoác ngoài áo thun hay váy hai dây đều xinh, hợp những ngày se lạnh.",
+  "ao-thun-trang": "Áo thun cotton 100% dày dặn, cổ tròn bo gọn, form vừa vặn. Món cơ bản dễ phối nhất trong tủ đồ.",
+  "ao-khoac-da":   "Áo khoác da kiểu biker với khóa kéo lệch và đinh tán bạc. Da mềm, lót trong thoáng, mặc cá tính quanh năm.",
+  "ao-bomber":     "Áo bomber vải dù nhẹ màu cam đất, bo cổ và tay áo co giãn. Có túi trong tiện lợi, chống gió nhẹ.",
+  "so-mi-denim":   "Sơ mi denim mỏng họa tiết chấm nhỏ, tay dài có thể xắn. Mặc riêng hoặc khoác ngoài đều hợp.",
+  "quan-jogger":   "Quần jogger vải lụa mềm màu hồng phấn, lưng chun thoải mái, bo gấu gọn gàng. Thanh lịch mà vẫn dễ chịu.",
+
+  "kinh-ram-tron":  "Kính râm gọng kim loại mảnh màu vàng, tròng xanh rêu chống tia UV400. Dáng tròn cổ điển hợp nhiều khuôn mặt.",
+  "mu-luoi-trai":   "Mũ lưỡi trai vải cotton wash màu xám bạc, khóa điều chỉnh phía sau. Mang lại vẻ phóng khoáng, bụi bặm.",
+  "dong-ho-day-da": "Đồng hồ mặt trắng tối giản, máy quartz, dây da thật mềm. Mặt kính chống trầy, chống nước nhẹ.",
+  "balo-xanh-navy": "Balo vải canvas chống thấm màu xanh navy, có ngăn đựng laptop 14 inch. Gọn nhẹ cho đi học, đi làm.",
+  "tui-xach-do":    "Túi xách da màu đỏ cam, khóa kim loại sang trọng, kèm dây đeo chéo. Điểm nhấn nổi bật cho trang phục tối màu.",
+  "tui-may-cam":    "Túi đan mây thủ công phối nắp và quai da, mang hơi thở mùa hè. Đủ rộng cho điện thoại, ví và son.",
+
+  "sneaker-chunky":   "Sneaker đế chunky phối màu trẻ trung, đệm êm, tăng chiều cao khoảng 5cm. Hợp với jogger hay chân váy ngắn.",
+  "sneaker-trang-be": "Sneaker da trắng phối da lộn màu be, đế cao su bám tốt. Kiểu dáng tối giản, đi cả ngày không mỏi.",
+  "boots-da-nau":     "Boots da bò cổ lửng màu nâu sẫm, buộc dây, đế chống trơn. Bền bỉ và càng mang càng đẹp.",
+  "cao-got-den":      "Giày cao gót mũi nhọn da đen bóng, gót 8cm thanh mảnh. Món không thể thiếu cho những dịp quan trọng.",
+  "giay-monk-nau":    "Giày monk strap da nâu với hai khóa cài, đế da thủ công. Lịch lãm cho công sở và tiệc tối.",
+  "cao-got-hoa-tiet": "Giày cao gót họa tiết lá nhiệt đới rực rỡ, gót 9cm. Làm bừng sáng một bộ trang phục đơn sắc.",
+
+  "serum-duong-am":    "Serum cấp ẩm với hyaluronic acid, kết cấu mỏng nhẹ, thấm nhanh. Dùng sáng và tối trước kem dưỡng. 30ml.",
+  "bang-phan-mat":     "Bảng phấn mắt 6 màu tông nâu hồng, có cả lì và nhũ. Bám màu lâu, dễ tán cho cả người mới.",
+  "tinh-dau-duong-da": "Tinh dầu dưỡng da từ jojoba và hoa hồng, giúp da mềm mịn, căng bóng. Thoa 2–3 giọt vào buổi tối. 30ml.",
+  "kem-duong-gel":     "Kem dưỡng dạng gel mát lạnh, cấp nước và làm dịu da. Không gây bết dính, hợp với da dầu. 50ml.",
+  "son-thoi-hong-dat": "Son thỏi màu hồng đất, chất son lì mịn nhưng không khô môi. Màu tự nhiên, hợp đi học và đi làm.",
+  "mascara-dai-mi":    "Mascara làm dài và cong mi, chống lem và chống nước. Đầu chải mảnh, chuốt tới từng sợi mi nhỏ.",
+
+  "vong-ngoc-trai":      "Vòng cổ ngọc trai nước ngọt, hạt tròn đều 7mm, khóa bạc 925. Cổ điển và thanh lịch, kèm hộp quà.",
+  "bong-tai-da-xanh":    "Bông tai bạc 925 đính đá xanh sapphire tổng hợp, viền đá trắng lấp lánh. Nổi bật cho những buổi tiệc.",
+  "day-chuyen-trai-tim": "Dây chuyền bạc 925 mặt trái tim đính đá, dây mảnh dài 45cm. Món quà nhỏ xinh cho người thương.",
+  "nhan-kim-cuong":      "Nhẫn bạc 925 đính đá cubic zirconia kiểu halo, lấp lánh như kim cương. Có đủ size từ 6 đến 9.",
+  "lac-tay-vang-hong":   "Lắc tay mạ vàng hồng họa tiết đan xen tinh tế, khóa chắc chắn. Đeo riêng hoặc mix cùng đồng hồ.",
+  "bong-tai-vang":       "Bông tai vòng xoắn mạ vàng 18K, nhẹ và không gây ngứa. Phù hợp đeo hằng ngày.",
+};
+
 function findProduct(id) {
   return PRODUCTS.find((p) => p.id === id);
 }
@@ -191,15 +229,24 @@ function valuesOf(product, key) {
 
 const viewHome = document.getElementById("view-home");
 const viewShop = document.getElementById("view-shop");
+const viewDetail = document.getElementById("view-detail");
 let currentCategory = null;
 
+// Địa chỉ trang:
+//   #trang-chu            -> Trang chủ
+//   #quan-ao, #my-pham... -> trang danh mục
+//   #san-pham/<id>        -> chi tiết 1 sản phẩm
 function showView() {
   const hash = location.hash.slice(1);
+  const product = hash.startsWith("san-pham/") ? findProduct(hash.slice("san-pham/".length)) : null;
   const category = CATEGORIES[hash] ? hash : null;
-  const current = category || "trang-chu";
+  // menu sáng ở danh mục của sản phẩm khi đang xem chi tiết
+  const current = product ? product.category : category || "trang-chu";
 
-  viewHome.hidden = Boolean(category);
+  viewHome.hidden = Boolean(category || product);
   viewShop.hidden = !category;
+  viewDetail.hidden = !product;
+  document.title = product ? `${product.name} – Veltra Atelier` : "Veltra Atelier";
 
   document.querySelectorAll(".nav a").forEach((link) => {
     if (link.dataset.view === current) {
@@ -208,6 +255,12 @@ function showView() {
       link.removeAttribute("aria-current");
     }
   });
+
+  if (product) {
+    renderDetail(product);
+    window.scrollTo(0, 0);
+    return;
+  }
 
   if (category && category !== currentCategory) {
     currentCategory = category;
@@ -265,11 +318,11 @@ function renderFilters() {
 function productCard(p) {
   return `
     <article class="product-card">
-      <div class="product-body">
+      <a class="product-body" href="#san-pham/${p.id}">
         <img src="images/products/${p.id}.jpg" alt="${p.alt}" loading="lazy" width="400" height="400">
         <span class="name">${p.name}${p.isNew ? '<span class="tag">Mới</span>' : ""}</span>
         <span class="price">${formatPrice(p.price)}</span>
-      </div>
+      </a>
       <button class="add-to-cart" data-id="${p.id}" aria-label="Thêm ${p.name} vào giỏ">+</button>
     </article>`;
 }
@@ -327,6 +380,63 @@ filterForm.addEventListener("submit", (event) => {
 filterForm.addEventListener("reset", () => {
   activeFilter = {};
   renderProducts();
+});
+
+
+// ===== ProductDetail: trang chi tiết sản phẩm =====
+
+const detailImg = document.getElementById("detail-img");
+const detailPrice = document.getElementById("detail-price");
+const detailName = document.getElementById("detail-name");
+const detailDesc = document.getElementById("detail-desc");
+const detailSpecs = document.getElementById("detail-specs");
+const detailAdd = document.getElementById("detail-add");
+const suggestList = document.getElementById("suggest-list");
+
+function renderDetail(p) {
+  detailImg.src = `images/products/large/${p.id}.jpg`;
+  detailImg.alt = p.alt;
+  detailPrice.textContent = formatPrice(p.price);
+  detailName.innerHTML = p.name + (p.isNew ? '<span class="tag">Mới</span>' : "");
+  detailDesc.textContent = DESCRIPTIONS[p.id] || "";
+
+  // Bảng thông tin: chỉ hiện những dòng sản phẩm có
+  const specs = [["Danh mục", CATEGORIES[p.category].label]];
+  if (p.kind) specs.push(["Loại", p.kind]);
+  if (p.sizes) specs.push(["Size", p.sizes.join(", ")]);
+  if (p.color && COLORS[p.color]) specs.push(["Màu", COLORS[p.color].label]);
+  if (p.material) specs.push(["Chất liệu", p.material]);
+  detailSpecs.innerHTML = specs.map(([label, value]) => `<dt>${label}</dt><dd>${value}</dd>`).join("");
+
+  detailAdd.dataset.id = p.id;
+  detailAdd.setAttribute("aria-label", `Thêm ${p.name} vào giỏ`);
+  detailAdd.textContent = "+ Thêm vào giỏ";
+
+  // Gợi ý: các món cùng danh mục trước, sau đó thêm hàng mới của danh mục khác
+  const sameCategory = PRODUCTS.filter((x) => x.category === p.category && x.id !== p.id);
+  const others = PRODUCTS.filter((x) => x.category !== p.category && x.isNew);
+  const suggestions = [...sameCategory, ...others].slice(0, 6);
+
+  suggestList.innerHTML = suggestions
+    .map(
+      (x) => `
+      <li>
+        <a class="suggest-item" href="#san-pham/${x.id}">
+          <img src="images/products/${x.id}.jpg" alt="" loading="lazy" width="64" height="64">
+          <span>
+            <span class="suggest-name">${x.name}</span>
+            <span class="suggest-price">${formatPrice(x.price)}</span>
+          </span>
+        </a>
+      </li>`
+    )
+    .join("");
+}
+
+detailAdd.addEventListener("click", () => {
+  addToCart(detailAdd.dataset.id);
+  detailAdd.textContent = "Đã thêm vào giỏ ✓";
+  setTimeout(() => (detailAdd.textContent = "+ Thêm vào giỏ"), 1200);
 });
 
 

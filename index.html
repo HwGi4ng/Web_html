@@ -126,6 +126,33 @@
       </div>
     </main>
 
+    <!-- ===== Chi tiết sản phẩm ===== -->
+    <main id="view-detail" class="view detail" hidden>
+      <!-- Ảnh sản phẩm -->
+      <section class="panel detail-media">
+        <div class="detail-image">
+          <img id="detail-img" alt="" width="900" height="900">
+        </div>
+      </section>
+
+      <!-- Giá + thông tin -->
+      <section class="panel detail-info" aria-labelledby="detail-name">
+        <div class="detail-price-row">
+          <p id="detail-price" class="detail-price"></p>
+          <button id="detail-add" class="btn-primary detail-add">+ Thêm vào giỏ</button>
+        </div>
+        <h1 id="detail-name" class="detail-name"></h1>
+        <p id="detail-desc" class="detail-desc"></p>
+        <dl id="detail-specs" class="detail-specs"></dl>
+      </section>
+
+      <!-- Sản phẩm gợi ý -->
+      <aside class="panel detail-side" aria-labelledby="suggest-title">
+        <h2 id="suggest-title">Gợi ý cho bạn</h2>
+        <ul id="suggest-list" class="suggest-list"></ul>
+      </aside>
+    </main>
+
     <footer class="footer">
       Made with <span class="heart" aria-label="yêu thương">♥</span> by Veltra Atelier · © 2026 · Ảnh: Unsplash
     </footer>
