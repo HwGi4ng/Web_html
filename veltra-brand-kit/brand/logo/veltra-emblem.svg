@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="200" height="240" role="img" aria-label="Huy hiệu Veltra Atelier">
+  <style>@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&amp;family=Poppins:wght@600&amp;display=swap');</style>
+  <ellipse cx="100" cy="120" rx="96" ry="118" fill="#053A2B"/>
+  <ellipse cx="100" cy="120" rx="88" ry="110" fill="none" stroke="#E5FCC2" stroke-width="2"/>
+  <ellipse cx="100" cy="120" rx="80" ry="102" fill="none" stroke="#E5FCC2" stroke-width="0.75"/>
+  <path d="M100 34 L106 44 L100 54 L94 44 Z" fill="#E5FCC2"/>
+  <text x="100" y="128" text-anchor="middle" font-family="'Pinyon Script', cursive" font-size="52" fill="#FFFFFF">Veltra</text>
+  <rect x="68" y="146" width="64" height="1" fill="#E5FCC2"/>
+  <text x="103" y="166" text-anchor="middle" font-family="Poppins, sans-serif" font-size="9" font-weight="600" letter-spacing="6" fill="#E5FCC2">ATELIER</text>
+  <path d="M100 186 L106 196 L100 206 L94 196 Z" fill="none" stroke="#E5FCC2" stroke-width="1"/>
+</svg>

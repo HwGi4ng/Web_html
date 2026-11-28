@@ -3,10 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hahaha</title>
+<title>Veltra Atelier</title>
+<meta name="theme-color" content="#0B7352">
+
+<!-- Favicon (bộ nhận diện VELTRA) -->
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/logo/icon-192.png" type="image/png" sizes="192x192">
+<link rel="icon" href="assets/logo/icon-512.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+
+<!-- Font thương hiệu: Poppins (giao diện) + Pinyon Script (tiêu đề lớn) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;700;800&family=Gluten:wght@800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="style.css">
 <script src="script.js" defer></script>
 </head>
@@ -14,23 +25,40 @@
 
 <div class="page">
 
-  <!-- ===== Menu bên trái ===== -->
+  <!-- ===== Sidebar ===== -->
   <aside class="sidebar">
-    <div class="logo">Hahaha</div>
-    <div class="avatar" aria-hidden="true">😎</div>
+    <a class="logo" href="#trang-chu">
+      <img src="assets/logo/veltra-wordmark-light.svg" alt="Veltra Atelier" width="180" height="70">
+    </a>
+    <div class="avatar">
+      <img src="assets/logo/veltra-monogram.svg" alt="" width="96" height="96">
+    </div>
     <nav class="nav" aria-label="Menu chính">
       <a href="#trang-chu" data-view="trang-chu">Trang chủ</a>
       <a href="#quan-ao" data-view="quan-ao">Quần áo</a>
       <a href="#phu-kien" data-view="phu-kien">Phụ kiện</a>
-      <a href="#giay" data-view="giay">Giày</a>
+      <a href="#giay-dep" data-view="giay-dep">Giày dép</a>
     </nav>
   </aside>
 
   <div class="content">
 
-    <!-- ===== Thanh tìm kiếm phía trên ===== -->
+    <!-- ===== Thanh trên: tìm kiếm + giỏ hàng ===== -->
     <header class="topbar">
-      <input id="search" type="search" placeholder="🔍 Tìm sản phẩm... (ví dụ: áo khoác)" aria-label="Tìm sản phẩm">
+      <label class="search">
+        <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/>
+          <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+        <input id="search" type="search" placeholder="Tìm sản phẩm... (ví dụ: áo khoác)" aria-label="Tìm sản phẩm">
+      </label>
+      <button id="cart-button" class="cart-button" aria-label="Giỏ hàng, 0 sản phẩm">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path d="M6 7h12l-1.2 12.2a1 1 0 0 1-1 .8H8.2a1 1 0 0 1-1-.8L6 7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M9 9V6a3 3 0 0 1 6 0v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span id="cart-count" class="cart-count" hidden>0</span>
+      </button>
     </header>
 
     <!-- ===== Trang chủ ===== -->
@@ -38,46 +66,88 @@
       <h1 class="site-title">Today your fashion show</h1>
       <div class="intro">
         <img src="images/cua-hang.jpg" alt="Giá treo áo len và áo khoác tông màu be, nâu">
-        <p>Chào mừng bạn đến với <strong>Hahaha</strong> – nơi thời trang không cần quá nghiêm túc!
-        Chúng mình mang đến những chiếc áo len ấm áp, áo khoác dáng rộng và phụ kiện xinh xắn,
-        giúp bạn mặc đẹp mỗi ngày mà vẫn luôn thoải mái và vui vẻ.</p>
+        <p>Chào mừng bạn đến với <strong>Veltra Atelier</strong> – nơi mỗi bộ trang phục là một buổi trình diễn
+        của riêng bạn. Chúng mình chọn lọc những chiếc áo len ấm áp, áo khoác dáng rộng và phụ kiện tinh tế,
+        để bạn mặc đẹp mỗi ngày mà vẫn luôn thoải mái.</p>
         <p class="photo-credit">Ảnh: Unsplash</p>
 
         <section class="outfit">
-          <h2>Hôm nay mặc gì? 🤔</h2>
-          <p>Bấm nút để Hahaha chọn giúp bạn một bộ đồ!</p>
-          <button id="outfit-button">✨ Gợi ý outfit</button>
+          <h2>Hôm nay mặc gì?</h2>
+          <p>Bấm nút để Veltra gợi ý cho bạn một bộ đồ.</p>
+          <button id="outfit-button" class="btn-primary">✦ Gợi ý outfit</button>
           <div id="outfit-result" class="outfit-result" aria-live="polite"></div>
         </section>
       </div>
     </main>
 
-    <!-- ===== Quần áo: lưới sản phẩm + cột voucher ===== -->
+    <!-- ===== Quần áo: lưới sản phẩm + cột phải ===== -->
     <main id="view-quan-ao" class="view shop" hidden>
-      <section class="product-panel" aria-label="Sản phẩm">
+      <section class="panel product-panel" aria-label="Sản phẩm">
         <div id="product-grid" class="product-grid"></div>
-        <p id="no-result" class="no-result" hidden>Không tìm thấy sản phẩm nào 😢</p>
+        <p id="no-result" class="no-result" hidden>Không tìm thấy sản phẩm phù hợp.</p>
       </section>
 
-      <aside class="voucher-panel" aria-live="polite">
-        <h2>🎟️ Voucher</h2>
-        <div id="voucher-list"></div>
-      </aside>
+      <div class="side-column">
+        <!-- Bộ lọc -->
+        <form id="filter-form" class="panel filter-panel" aria-label="Bộ lọc">
+          <h2>Bộ lọc</h2>
+
+          <fieldset>
+            <legend>Size</legend>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" name="size" value="S"><span>S</span></label>
+              <label class="chip"><input type="checkbox" name="size" value="M"><span>M</span></label>
+              <label class="chip"><input type="checkbox" name="size" value="L"><span>L</span></label>
+              <label class="chip"><input type="checkbox" name="size" value="XL"><span>XL</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Màu</legend>
+            <div id="color-options" class="chips"></div>
+          </fieldset>
+
+          <div class="filter-actions">
+            <button type="submit" class="btn-primary">Áp dụng</button>
+            <button type="reset" class="btn-secondary">Xóa lọc</button>
+          </div>
+        </form>
+
+        <!-- Voucher -->
+        <aside class="panel voucher-panel" aria-live="polite">
+          <h2>Voucher</h2>
+          <div id="voucher-list"></div>
+        </aside>
+      </div>
     </main>
 
-    <!-- ===== Phụ kiện & Giày: sắp ra mắt ===== -->
+    <!-- ===== Phụ kiện & Giày dép: sắp ra mắt ===== -->
     <main id="view-phu-kien" class="view coming-soon" hidden>
-      <p>👜 Phụ kiện đang được chuẩn bị, sắp ra mắt nhé!</p>
+      <p>Phụ kiện đang được chuẩn bị, sắp ra mắt nhé!</p>
     </main>
-    <main id="view-giay" class="view coming-soon" hidden>
-      <p>👟 Giày đang được chuẩn bị, sắp ra mắt nhé!</p>
+    <main id="view-giay-dep" class="view coming-soon" hidden>
+      <p>Giày dép đang được chuẩn bị, sắp ra mắt nhé!</p>
     </main>
 
     <footer class="footer">
-      Made with <span class="heart">❤</span> by Hahaha · © 2026 · Ảnh: Unsplash
+      Made with <span class="heart" aria-label="yêu thương">♥</span> by Veltra Atelier · © 2026 · Ảnh: Unsplash
     </footer>
   </div>
 </div>
+
+<!-- ===== Giỏ hàng (cửa sổ bật lên) ===== -->
+<dialog id="cart-dialog" class="cart-dialog" aria-labelledby="cart-title">
+  <div class="cart-header">
+    <h2 id="cart-title">Giỏ hàng</h2>
+    <button id="cart-close" class="icon-button" aria-label="Đóng giỏ hàng">✕</button>
+  </div>
+  <ul id="cart-items" class="cart-items"></ul>
+  <p id="cart-empty" class="cart-empty">Giỏ hàng đang trống.</p>
+  <div class="cart-total">
+    <span>Tổng cộng</span>
+    <strong id="cart-total">0đ</strong>
+  </div>
+</dialog>
 
 </body>
 </html>

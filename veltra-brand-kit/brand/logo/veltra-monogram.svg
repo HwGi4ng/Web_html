@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="Monogram V của Veltra">
+  <style>@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&amp;display=swap');</style>
+  <circle cx="120" cy="120" r="118" fill="#E5FCC2"/>
+  <circle cx="120" cy="120" r="108" fill="none" stroke="#053A2B" stroke-width="1.5"/>
+  <circle cx="120" cy="120" r="100" fill="none" stroke="#053A2B" stroke-width="0.6"/>
+  <text x="128" y="172" text-anchor="middle" font-family="'Pinyon Script', cursive" font-size="170" fill="#053A2B">V</text>
+</svg>

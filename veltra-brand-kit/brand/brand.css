@@ -1,0 +1,29 @@
+/* VELTRA — design tokens (bảng màu, font, bo góc) */
+@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Màu */
+  --veltra-lime: #E5FCC2;      /* nền chính, chữ trên nền tối */
+  --veltra-forest: #053A2B;    /* xanh rừng đậm: chữ chính, thẻ sản phẩm, vòng tròn trang trí */
+  --veltra-forest-2: #0A4A37;  /* xanh rừng phụ: ô nền tối thứ hai */
+  --veltra-green: #0B7352;     /* xanh lá vừa: sidebar, nút chính */
+  --veltra-gray: #C8D0D9;      /* xám: ô tìm kiếm, panel, nút phụ */
+  --veltra-sage: #B9D9A0;      /* chữ phụ trên nền tối */
+  --veltra-white: #FFFFFF;
+
+  /* Font */
+  --font-logo: 'Pinyon Script', cursive;   /* CHỈ dùng cho logo / tiêu đề rất lớn */
+  --font-body: 'Poppins', sans-serif;      /* mọi chữ giao diện, hỗ trợ tiếng Việt */
+
+  /* Bo góc & khoảng cách */
+  --radius-lg: 16px;   /* panel, thẻ sản phẩm, sidebar */
+  --radius-md: 10px;   /* nút, menu */
+  --gap: 24px;
+}
+
+body {
+  margin: 0;
+  background: var(--veltra-lime);
+  color: var(--veltra-forest);
+  font-family: var(--font-body);
+}
