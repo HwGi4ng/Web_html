@@ -139,13 +139,34 @@
 
       <!-- Giá + thông tin -->
       <section class="panel detail-info" aria-labelledby="detail-name">
-        <div class="detail-price-row">
-          <p id="detail-price" class="detail-price"></p>
-          <button id="detail-add" class="btn-primary detail-add">+ Thêm vào giỏ</button>
-        </div>
+        <p id="detail-price" class="detail-price"></p>
         <h1 id="detail-name" class="detail-name"></h1>
         <p id="detail-desc" class="detail-desc"></p>
         <dl id="detail-specs" class="detail-specs"></dl>
+
+        <!-- Mục mua: size, số lượng, thêm giỏ / mua ngay -->
+        <form id="buy-form" class="buy-box" novalidate>
+          <fieldset id="buy-sizes" class="buy-field">
+            <legend class="buy-label">Chọn size</legend>
+            <div id="buy-size-options" class="chips"></div>
+          </fieldset>
+
+          <div class="buy-field">
+            <span id="qty-label" class="buy-label">Số lượng</span>
+            <div class="stepper" role="group" aria-labelledby="qty-label">
+              <button type="button" class="icon-button" data-step="-1" aria-label="Giảm số lượng">−</button>
+              <output id="buy-qty" aria-live="polite">1</output>
+              <button type="button" class="icon-button" data-step="1" aria-label="Tăng số lượng">+</button>
+            </div>
+          </div>
+
+          <p id="buy-error" class="form-error" role="alert" hidden></p>
+
+          <div class="buy-actions">
+            <button type="submit" value="cart" class="btn-secondary">Thêm vào giỏ</button>
+            <button type="submit" value="buy" class="btn-primary">Mua ngay</button>
+          </div>
+        </form>
       </section>
 
       <!-- Sản phẩm gợi ý -->
@@ -172,6 +193,61 @@
   <div class="cart-total">
     <span>Tổng cộng</span>
     <strong id="cart-total">0đ</strong>
+  </div>
+  <p id="cart-error" class="form-error" role="alert" hidden></p>
+  <button id="cart-checkout" class="btn-primary dialog-cta">Đặt hàng</button>
+</dialog>
+
+<!-- ===== Đặt hàng (cửa sổ bật lên) ===== -->
+<dialog id="checkout-dialog" class="dialog" aria-labelledby="checkout-title">
+  <div class="dialog-header">
+    <h2 id="checkout-title">Đặt hàng</h2>
+    <button class="icon-button" data-close aria-label="Đóng">✕</button>
+  </div>
+
+  <!-- Bước 1: xem lại đơn + điền thông tin -->
+  <div id="checkout-step">
+    <ul id="checkout-items" class="order-items"></ul>
+    <div class="cart-total">
+      <span>Tổng cộng</span>
+      <strong id="checkout-total">0đ</strong>
+    </div>
+
+    <form id="checkout-form" class="checkout-form">
+      <label class="field">
+        <span>Họ và tên *</span>
+        <input name="name" type="text" required maxlength="50" autocomplete="name">
+      </label>
+      <label class="field">
+        <span>Số điện thoại *</span>
+        <input name="phone" type="tel" required pattern="0[0-9]{9}" inputmode="numeric"
+               placeholder="Ví dụ: 0912345678" title="Số điện thoại gồm 10 chữ số, bắt đầu bằng 0" autocomplete="tel">
+      </label>
+      <label class="field">
+        <span>Địa chỉ giao hàng *</span>
+        <textarea name="address" rows="2" required maxlength="200" autocomplete="street-address"></textarea>
+      </label>
+      <label class="field">
+        <span>Ghi chú</span>
+        <textarea name="note" rows="2" maxlength="200" placeholder="Ví dụ: giao giờ hành chính"></textarea>
+      </label>
+      <fieldset class="field payment">
+        <legend>Thanh toán</legend>
+        <label class="radio"><input type="radio" name="payment" value="Thanh toán khi nhận hàng (COD)" checked> Thanh toán khi nhận hàng (COD)</label>
+        <label class="radio"><input type="radio" name="payment" value="Chuyển khoản ngân hàng"> Chuyển khoản ngân hàng</label>
+      </fieldset>
+      <button type="submit" class="btn-primary dialog-cta">Xác nhận đặt hàng</button>
+    </form>
+  </div>
+
+  <!-- Bước 2: đặt hàng thành công -->
+  <div id="checkout-done" class="order-done" hidden>
+    <div class="done-icon" aria-hidden="true">✓</div>
+    <h3>Đặt hàng thành công!</h3>
+    <p>Mã đơn hàng: <strong id="order-code"></strong></p>
+    <div id="order-summary" class="order-summary"></div>
+    <p class="profile-note">Đây là bản thử nghiệm: đơn hàng chưa được gửi tới cửa hàng.</p>
+    <button class="btn-primary dialog-cta" data-close>Tiếp tục mua sắm</button>
   </div>
 </dialog>
 

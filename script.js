@@ -394,7 +394,6 @@ const detailPrice = document.getElementById("detail-price");
 const detailName = document.getElementById("detail-name");
 const detailDesc = document.getElementById("detail-desc");
 const detailSpecs = document.getElementById("detail-specs");
-const detailAdd = document.getElementById("detail-add");
 const suggestList = document.getElementById("suggest-list");
 
 function renderDetail(p) {
@@ -412,9 +411,7 @@ function renderDetail(p) {
   if (p.material) specs.push(["Chất liệu", p.material]);
   detailSpecs.innerHTML = specs.map(([label, value]) => `<dt>${label}</dt><dd>${value}</dd>`).join("");
 
-  detailAdd.dataset.id = p.id;
-  detailAdd.setAttribute("aria-label", `Thêm ${p.name} vào giỏ`);
-  detailAdd.textContent = "+ Thêm vào giỏ";
+  renderBuyBox(p);
 
   // Gợi ý: các món cùng danh mục trước, sau đó thêm hàng mới của danh mục khác
   const sameCategory = PRODUCTS.filter((x) => x.category === p.category && x.id !== p.id);
@@ -460,10 +457,74 @@ document.getElementById("detail-back").addEventListener("click", () => {
   }
 });
 
-detailAdd.addEventListener("click", () => {
-  addToCart(detailAdd.dataset.id);
-  detailAdd.textContent = "Đã thêm vào giỏ ✓";
-  setTimeout(() => (detailAdd.textContent = "+ Thêm vào giỏ"), 1200);
+// ===== BuyBox: mục mua trên trang chi tiết (size, số lượng, thêm giỏ / mua ngay) =====
+
+const buyForm = document.getElementById("buy-form");
+const buySizes = document.getElementById("buy-sizes");
+const buySizeOptions = document.getElementById("buy-size-options");
+const buyQtyOutput = document.getElementById("buy-qty");
+const buyError = document.getElementById("buy-error");
+const MAX_QTY = 10;
+let buyProduct = null;
+let buyQty = 1;
+
+function renderBuyBox(p) {
+  buyProduct = p;
+  buyQty = 1;
+  buyQtyOutput.textContent = buyQty;
+  buyError.hidden = true;
+  buyForm.classList.remove("need-size");
+
+  buySizes.hidden = !p.sizes;
+  buySizeOptions.innerHTML = (p.sizes || [])
+    .map(
+      (size) => `
+      <label class="chip">
+        <input type="radio" name="buy-size" value="${size}">
+        <span>${size}</span>
+      </label>`
+    )
+    .join("");
+}
+
+// Nút − / + số lượng (1 đến 10)
+buyForm.addEventListener("click", (event) => {
+  const step = event.target.closest("[data-step]");
+  if (!step) return;
+  buyQty = Math.min(MAX_QTY, Math.max(1, buyQty + Number(step.dataset.step)));
+  buyQtyOutput.textContent = buyQty;
+});
+
+// Chọn size xong thì ẩn thông báo lỗi
+buySizeOptions.addEventListener("change", () => {
+  buyError.hidden = true;
+  buyForm.classList.remove("need-size");
+});
+
+buyForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const action = event.submitter ? event.submitter.value : "cart";
+  const size = new FormData(buyForm).get("buy-size") || "";
+
+  // Món có size thì bắt buộc chọn size
+  if (buyProduct.sizes && !size) {
+    buyError.textContent = "Vui lòng chọn size trước khi mua.";
+    buyError.hidden = false;
+    buyForm.classList.add("need-size");
+    buySizeOptions.querySelector("input")?.focus();
+    return;
+  }
+
+  if (action === "buy") {
+    openCheckout([{ product: buyProduct, size, qty: buyQty }], "buy-now");
+  } else {
+    addToCart(buyProduct.id, null, size, buyQty);
+    const button = event.submitter;
+    if (button) {
+      button.textContent = "Đã thêm ✓";
+      setTimeout(() => (button.textContent = "Thêm vào giỏ"), 1200);
+    }
+  }
 });
 
 
@@ -486,6 +547,7 @@ document.querySelectorAll("dialog").forEach((dialog) => {
 
 
 // ===== Cart: giỏ hàng (nhớ trong trình duyệt của người xem) =====
+// Mỗi dòng trong giỏ là 1 cặp sản phẩm + size: { "ao-bomber|M": 2, "kinh-ram-tron|": 1 }
 
 const CART_KEY = "veltra-cart";
 const cartButton = document.getElementById("cart-button");
@@ -494,12 +556,35 @@ const cartDialog = document.getElementById("cart-dialog");
 const cartItems = document.getElementById("cart-items");
 const cartEmpty = document.getElementById("cart-empty");
 const cartTotal = document.getElementById("cart-total");
+const cartError = document.getElementById("cart-error");
+const cartCheckout = document.getElementById("cart-checkout");
+
+const lineKey = (id, size = "") => `${id}|${size}`;
+function parseKey(key) {
+  const [id, size = ""] = key.split("|");
+  return { id, size };
+}
 
 let cart = loadJSON(CART_KEY, {});
 if (typeof cart !== "object" || Array.isArray(cart)) cart = {};
+// giỏ cũ (chưa có size) -> chuyển sang dạng mới
+Object.keys(cart).forEach((key) => {
+  if (!key.includes("|")) {
+    cart[lineKey(key)] = (cart[lineKey(key)] || 0) + cart[key];
+    delete cart[key];
+  }
+});
+saveJSON(CART_KEY, cart);
 
-function addToCart(id, button) {
-  cart[id] = (cart[id] || 0) + 1;
+function cartLines() {
+  return Object.entries(cart)
+    .map(([key, qty]) => ({ key, ...parseKey(key), qty, product: findProduct(parseKey(key).id) }))
+    .filter((line) => line.product && line.qty > 0);
+}
+
+function addToCart(id, button, size = "", qty = 1) {
+  const key = lineKey(id, size);
+  cart[key] = (cart[key] || 0) + qty;
   saveJSON(CART_KEY, cart);
   renderCart();
 
@@ -513,52 +598,157 @@ function addToCart(id, button) {
   }
 }
 
-function changeQty(id, delta) {
-  cart[id] = (cart[id] || 0) + delta;
-  if (cart[id] <= 0) delete cart[id];
+function changeQty(key, delta) {
+  cart[key] = (cart[key] || 0) + delta;
+  if (cart[key] <= 0) delete cart[key];
+  saveJSON(CART_KEY, cart);
+  renderCart();
+}
+
+// Đổi size của 1 dòng trong giỏ (gộp nếu đã có dòng cùng size)
+function changeSize(key, newSize) {
+  const { id } = parseKey(key);
+  const qty = cart[key] || 0;
+  delete cart[key];
+  const newKey = lineKey(id, newSize);
+  cart[newKey] = (cart[newKey] || 0) + qty;
   saveJSON(CART_KEY, cart);
   renderCart();
 }
 
 function renderCart() {
-  const entries = Object.entries(cart).filter(([id]) => findProduct(id));
-  const count = entries.reduce((sum, [, qty]) => sum + qty, 0);
-  const total = entries.reduce((sum, [id, qty]) => sum + findProduct(id).price * qty, 0);
+  const lines = cartLines();
+  const count = lines.reduce((sum, l) => sum + l.qty, 0);
+  const total = lines.reduce((sum, l) => sum + l.product.price * l.qty, 0);
 
   cartCount.textContent = count;
   cartCount.hidden = count === 0;
   cartButton.setAttribute("aria-label", `Giỏ hàng, ${count} sản phẩm`);
 
-  cartItems.innerHTML = entries
-    .map(([id, qty]) => {
-      const p = findProduct(id);
+  cartItems.innerHTML = lines
+    .map(({ key, size, qty, product: p }) => {
+      // Món có size: hiện ô chọn size (viền đỏ nếu chưa chọn)
+      const sizeControl = p.sizes
+        ? `<select class="size-select${size ? "" : " missing"}" data-key="${key}" aria-label="Size của ${p.name}">
+             <option value="" ${size ? "" : "selected"}>Chọn size</option>
+             ${p.sizes.map((s) => `<option value="${s}" ${s === size ? "selected" : ""}>Size ${s}</option>`).join("")}
+           </select>`
+        : "";
       return `
         <li class="cart-item">
           <img src="images/products/${p.id}.jpg" alt="">
           <div>
             <div class="item-name">${p.name}</div>
             <div class="item-price">${formatPrice(p.price * qty)}</div>
+            ${sizeControl}
           </div>
           <div class="qty">
-            <button class="icon-button" data-id="${id}" data-delta="-1" aria-label="Bớt 1 ${p.name}">−</button>
+            <button class="icon-button" data-key="${key}" data-delta="-1" aria-label="Bớt 1 ${p.name}">−</button>
             <span>${qty}</span>
-            <button class="icon-button" data-id="${id}" data-delta="1" aria-label="Thêm 1 ${p.name}">+</button>
+            <button class="icon-button" data-key="${key}" data-delta="1" aria-label="Thêm 1 ${p.name}">+</button>
           </div>
         </li>`;
     })
     .join("");
 
-  cartEmpty.hidden = entries.length > 0;
+  cartEmpty.hidden = lines.length > 0;
   cartTotal.textContent = formatPrice(total);
+  cartCheckout.hidden = lines.length === 0;
+  cartError.hidden = true;
 }
 
 cartItems.addEventListener("click", (event) => {
   const button = event.target.closest("[data-delta]");
   if (!button) return;
-  changeQty(button.dataset.id, Number(button.dataset.delta));
+  changeQty(button.dataset.key, Number(button.dataset.delta));
+});
+
+cartItems.addEventListener("change", (event) => {
+  const select = event.target.closest(".size-select");
+  if (select) changeSize(select.dataset.key, select.value);
 });
 
 cartButton.addEventListener("click", () => cartDialog.showModal());
+
+// Đặt hàng từ giỏ: kiểm tra mọi món có size đã được chọn size
+cartCheckout.addEventListener("click", () => {
+  const lines = cartLines();
+  const missing = lines.filter((l) => l.product.sizes && !l.size);
+  if (missing.length) {
+    cartError.textContent = "Vui lòng chọn size cho: " + missing.map((l) => l.product.name).join(", ") + ".";
+    cartError.hidden = false;
+    cartItems.querySelector(".size-select.missing")?.focus();
+    return;
+  }
+  cartDialog.close();
+  openCheckout(lines, "cart");
+});
+
+
+// ===== Checkout: đặt hàng (chỉ hiện xác nhận, chưa gửi đơn đi đâu) =====
+
+const checkoutDialog = document.getElementById("checkout-dialog");
+const checkoutStep = document.getElementById("checkout-step");
+const checkoutDone = document.getElementById("checkout-done");
+const checkoutItems = document.getElementById("checkout-items");
+const checkoutTotal = document.getElementById("checkout-total");
+const checkoutForm = document.getElementById("checkout-form");
+let pendingOrder = null; // { lines, source: "cart" | "buy-now" }
+
+function orderLineText(l) {
+  return `${l.product.name}${l.size ? ` (size ${l.size})` : ""} × ${l.qty}`;
+}
+
+// Chống chèn mã HTML từ chữ người dùng gõ vào form
+function escapeHTML(text) {
+  return String(text).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+
+function openCheckout(lines, source) {
+  pendingOrder = { lines, source };
+  checkoutItems.innerHTML = lines
+    .map((l) => `<li><span>${orderLineText(l)}</span><strong>${formatPrice(l.product.price * l.qty)}</strong></li>`)
+    .join("");
+  checkoutTotal.textContent = formatPrice(lines.reduce((sum, l) => sum + l.product.price * l.qty, 0));
+
+  checkoutForm.reset();
+  checkoutForm.elements.name.value = profile.name || ""; // điền sẵn tên từ hồ sơ
+  checkoutStep.hidden = false;
+  checkoutDone.hidden = true;
+  checkoutDialog.showModal();
+}
+
+checkoutForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (!checkoutForm.checkValidity()) {
+    checkoutForm.reportValidity();
+    return;
+  }
+
+  const data = new FormData(checkoutForm);
+  const code = "VLT-" + Date.now().toString(36).toUpperCase().slice(-6);
+  const total = pendingOrder.lines.reduce((sum, l) => sum + l.product.price * l.qty, 0);
+
+  document.getElementById("order-code").textContent = code;
+  document.getElementById("order-summary").innerHTML = `
+    ${pendingOrder.lines.map((l) => `<p>${orderLineText(l)}</p>`).join("")}
+    <p><strong>Tổng cộng: ${formatPrice(total)}</strong></p>
+    <p>Người nhận: ${escapeHTML(data.get("name"))} · ${escapeHTML(data.get("phone"))}</p>
+    <p>Địa chỉ: ${escapeHTML(data.get("address"))}</p>
+    ${data.get("note") ? `<p>Ghi chú: ${escapeHTML(data.get("note"))}</p>` : ""}
+    <p>Thanh toán: ${escapeHTML(data.get("payment"))}</p>`;
+
+  // Đặt từ giỏ -> làm trống giỏ
+  if (pendingOrder.source === "cart") {
+    cart = {};
+    saveJSON(CART_KEY, cart);
+    renderCart();
+  }
+
+  checkoutStep.hidden = true;
+  checkoutDone.hidden = false;
+  checkoutDialog.scrollTop = 0;
+});
 
 
 // ===== Home: "Hàng mới về" + gợi ý outfit =====

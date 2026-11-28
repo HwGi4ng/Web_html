@@ -639,14 +639,6 @@ a.product-body:focus-visible {
   padding: 20px 24px;
 }
 
-.detail-price-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
 .detail-price {
   margin: 0;
   font-size: 30px;
@@ -692,6 +684,83 @@ a.product-body:focus-visible {
 
 .detail-specs dd {
   margin: 0;
+}
+
+/* Mục mua */
+.buy-box {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(5, 58, 43, 0.2);
+}
+
+.buy-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.buy-field[hidden] {
+  display: none;
+}
+
+.buy-label {
+  padding: 0;
+  font-weight: 600;
+}
+
+/* Size dạng nút tròn chọn 1 (radio) */
+.chip input[type="radio"]:checked + span {
+  color: var(--veltra-white);
+  background-color: var(--veltra-green);
+}
+
+.buy-box.need-size .chip span {
+  border-color: #b42318;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 4px;
+  background-color: var(--veltra-white);
+  border-radius: var(--radius-md);
+}
+
+.stepper output {
+  min-width: 36px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.form-error {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #b42318; /* đỏ đậm, đủ tương phản trên nền xám/lime */
+}
+
+.form-error[hidden] {
+  display: none;
+}
+
+.buy-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.buy-actions button {
+  min-height: 52px;
+  font-size: 16px;
 }
 
 /* Cột gợi ý */
@@ -951,6 +1020,139 @@ a.product-body:focus-visible {
   border: none;
   border-radius: var(--radius-lg);
   box-shadow: 0 20px 50px rgba(5, 58, 43, 0.35);
+}
+
+.dialog {
+  overflow-y: auto;
+}
+
+.dialog-cta {
+  width: 100%;
+  margin-top: 16px;
+}
+
+/* Ô chọn size trong giỏ hàng */
+.size-select {
+  margin-top: 4px;
+  min-height: 36px;
+  padding: 0 8px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--veltra-forest);
+  background-color: var(--veltra-white);
+  border: 2px solid var(--veltra-gray);
+  border-radius: 8px;
+}
+
+.size-select.missing {
+  border-color: #b42318;
+}
+
+.item-size {
+  font-size: 13px;
+}
+
+/* Đặt hàng */
+.order-items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.order-items li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  font-size: 14px;
+  border-bottom: 1px solid var(--veltra-gray);
+}
+
+.order-items li strong {
+  white-space: nowrap;
+}
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.field textarea {
+  padding: 10px 14px;
+  font: inherit;
+  font-weight: 400;
+  color: var(--veltra-forest);
+  background-color: var(--veltra-white);
+  border: 2px solid var(--veltra-gray);
+  border-radius: var(--radius-md);
+  resize: vertical;
+}
+
+.field textarea:focus {
+  border-color: var(--veltra-green);
+  outline: none;
+}
+
+.payment {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.payment legend {
+  margin-bottom: 6px;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--tap);
+  font-weight: 400;
+}
+
+.radio input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--veltra-green);
+}
+
+.order-done {
+  text-align: center;
+}
+
+.done-icon {
+  width: 64px;
+  height: 64px;
+  margin: 8px auto 0;
+  display: grid;
+  place-items: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--veltra-white);
+  background-color: var(--veltra-green);
+  border-radius: 50%;
+  animation: pop 0.4s ease-out both;
+}
+
+.order-done h3 {
+  margin: 12px 0 4px;
+  font-size: 22px;
+}
+
+.order-summary {
+  margin: 12px 0;
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+  background-color: var(--veltra-white);
+  border-radius: var(--radius-md);
+}
+
+.order-summary p {
+  margin: 4px 0;
 }
 
 .dialog::backdrop {
