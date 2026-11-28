@@ -75,37 +75,6 @@ document.addEventListener("pointermove", (event) => {
 });
 
 
-// ===== Outfit: "Hôm nay mặc gì?" =====
-
-const OUTFIT = {
-  "Áo": ["Áo len cổ lọ màu be", "Áo sơ mi trắng oversize", "Áo thun basic màu kem", "Áo khoác jean bạc màu", "Áo cardigan xanh rêu"],
-  "Quần / Váy": ["Quần jean ống rộng", "Chân váy xếp ly", "Quần tây màu nâu", "Quần short kaki", "Váy midi hoa nhí"],
-  "Giày": ["Sneaker trắng", "Boots da nâu", "Giày lười đen", "Sandal quai mảnh", "Giày búp bê mũi tròn"],
-  "Phụ kiện": ["Mũ bucket", "Túi tote vải", "Kính râm gọng tròn", "Khăn lụa nhỏ", "Đồng hồ dây da"],
-};
-
-const OUTFIT_COMMENTS = [
-  "Thanh lịch mà vẫn thoải mái – đúng chất Veltra.",
-  "Hôm nay là buổi trình diễn của riêng bạn.",
-  "Đơn giản nhưng đầy cuốn hút.",
-  "Tự tin bước ra phố thôi!",
-  "Phối thế này thì ai cũng phải ngoái nhìn.",
-];
-
-const outfitButton = document.getElementById("outfit-button");
-const outfitResult = document.getElementById("outfit-result");
-
-outfitButton.addEventListener("click", () => {
-  const items = Object.entries(OUTFIT)
-    .map(([type, choices]) => `<li><strong>${type}:</strong> ${pickRandom(choices)}</li>`)
-    .join("");
-  outfitResult.innerHTML = `<ul>${items}</ul><p class="outfit-comment">${pickRandom(OUTFIT_COMMENTS)}</p>`;
-  outfitResult.classList.remove("pop");
-  void outfitResult.offsetWidth;
-  outfitResult.classList.add("pop");
-});
-
-
 // ===== Dữ liệu: danh mục, sản phẩm =====
 // Thêm danh mục mới: thêm 1 mục vào CATEGORIES, 1 link trong menu (index.html)
 // và các sản phẩm có category tương ứng.
@@ -223,6 +192,7 @@ function valuesOf(product, key) {
 const viewHome = document.getElementById("view-home");
 const viewShop = document.getElementById("view-shop");
 let currentCategory = null;
+let pendingSelectId = null; // sản phẩm được bấm ở Trang chủ, sẽ chọn sẵn khi mở danh mục
 
 function showView() {
   const hash = location.hash.slice(1);
@@ -247,6 +217,18 @@ function showView() {
     renderFilters();
     renderProducts();
     renderVouchers();
+  }
+
+  // Đến từ Trang chủ: chọn sẵn sản phẩm vừa bấm để hiện voucher
+  if (category && pendingSelectId) {
+    selectedId = pendingSelectId;
+    pendingSelectId = null;
+    searchInput.value = "";
+    renderProducts();
+    renderVouchers();
+    const card = grid.querySelector(`.product-select[data-id="${selectedId}"]`);
+    card?.focus({ preventScroll: true });
+    card?.scrollIntoView({ block: "center" });
   }
 }
 
@@ -533,6 +515,107 @@ cartItems.addEventListener("click", (event) => {
 cartButton.addEventListener("click", () => cartDialog.showModal());
 
 
+// ===== Home: "Hàng mới về" + gợi ý outfit =====
+
+const newGrid = document.getElementById("new-grid");
+const outfitButton = document.getElementById("outfit-button");
+const outfitResult = document.getElementById("outfit-result");
+
+// Hàng mới về: ưu tiên mỗi danh mục 1 món, tối đa 6 món
+function renderNewArrivals() {
+  const fresh = PRODUCTS.filter((p) => p.isNew);
+  const picked = [];
+  Object.keys(CATEGORIES).forEach((category) => {
+    const item = fresh.find((p) => p.category === category);
+    if (item) picked.push(item);
+  });
+  fresh.forEach((p) => {
+    if (picked.length < 6 && !picked.includes(p)) picked.push(p);
+  });
+  newGrid.innerHTML = picked.slice(0, 6).map(productCard).join("");
+}
+
+// Mỗi bộ outfit gồm 1 món của từng danh mục dưới đây
+const OUTFIT_SLOTS = [
+  { label: "Quần áo",   category: "quan-ao" },
+  { label: "Giày dép",  category: "giay-dep" },
+  { label: "Phụ kiện",  category: "phu-kien" },
+  { label: "Trang sức", category: "trang-suc" },
+];
+
+const OUTFIT_COMMENTS = [
+  "Thanh lịch mà vẫn thoải mái – đúng chất Veltra.",
+  "Hôm nay là buổi trình diễn của riêng bạn.",
+  "Đơn giản nhưng đầy cuốn hút.",
+  "Tự tin bước ra phố thôi!",
+  "Phối thế này thì ai cũng phải ngoái nhìn.",
+];
+
+let currentOutfit = [];
+
+outfitButton.addEventListener("click", () => {
+  currentOutfit = OUTFIT_SLOTS.map((slot) => {
+    const options = PRODUCTS.filter((p) => p.category === slot.category);
+    // tránh lặp lại đúng món của lần gợi ý trước
+    const previous = currentOutfit.find((p) => p.category === slot.category);
+    const pool = options.filter((p) => p !== previous);
+    return pickRandom(pool.length ? pool : options);
+  });
+
+  const total = currentOutfit.reduce((sum, p) => sum + p.price, 0);
+  const slots = currentOutfit
+    .map(
+      (p, i) => `
+      <div class="outfit-slot">
+        <span class="slot-label">${OUTFIT_SLOTS[i].label}</span>
+        ${productCard(p)}
+      </div>`
+    )
+    .join("");
+
+  outfitResult.innerHTML = `
+    <div class="outfit-grid">${slots}</div>
+    <div class="outfit-footer">
+      <p class="outfit-comment">${pickRandom(OUTFIT_COMMENTS)}</p>
+      <div class="outfit-buy">
+        <span class="outfit-total">Cả bộ: <strong>${formatPrice(total)}</strong></span>
+        <button class="btn-primary add-outfit">Thêm cả bộ vào giỏ</button>
+      </div>
+    </div>`;
+
+  outfitButton.textContent = "✦ Gợi ý bộ khác";
+
+  // chạy lại hiệu ứng "nảy" mỗi lần bấm
+  outfitResult.classList.remove("pop");
+  void outfitResult.offsetWidth;
+  outfitResult.classList.add("pop");
+});
+
+// Bấm trên Trang chủ: "+" thêm vào giỏ, bấm thẻ thì mở danh mục của món đó
+viewHome.addEventListener("click", (event) => {
+  const addButton = event.target.closest(".add-to-cart");
+  if (addButton) {
+    addToCart(addButton.dataset.id, addButton);
+    return;
+  }
+
+  const outfitBuy = event.target.closest(".add-outfit");
+  if (outfitBuy) {
+    currentOutfit.forEach((p) => addToCart(p.id));
+    outfitBuy.textContent = "Đã thêm cả bộ ✓";
+    setTimeout(() => (outfitBuy.textContent = "Thêm cả bộ vào giỏ"), 1500);
+    return;
+  }
+
+  const selectButton = event.target.closest(".product-select");
+  if (selectButton) {
+    const product = findProduct(selectButton.dataset.id);
+    pendingSelectId = product.id;
+    location.hash = "#" + product.category;
+  }
+});
+
+
 // ===== Profile: avatar + tên người mua (nhớ trong trình duyệt) =====
 
 const PROFILE_KEY = "veltra-profile";
@@ -620,4 +703,5 @@ profileForm.addEventListener("submit", (event) => {
 window.addEventListener("hashchange", showView);
 renderProfile();
 renderCart();
+renderNewArrivals();
 showView();

@@ -73,22 +73,34 @@
     </header>
 
     <!-- ===== Trang chủ ===== -->
-    <main id="view-home" class="view">
-      <h1 class="site-title">Today your fashion show</h1>
-      <div class="intro">
-        <img src="images/cua-hang.jpg" alt="Giá treo áo len và áo khoác tông màu be, nâu">
-        <p>Chào mừng bạn đến với <strong>Veltra Atelier</strong> – nơi mỗi bộ trang phục là một buổi trình diễn
-        của riêng bạn. Từ quần áo, giày dép, phụ kiện đến mỹ phẩm và trang sức, chúng mình chọn lọc
-        những món đồ tinh tế để bạn đẹp mỗi ngày mà vẫn luôn thoải mái.</p>
-        <p class="photo-credit">Ảnh: Unsplash</p>
+    <main id="view-home" class="view home">
+      <section class="hero">
+        <h1 class="site-title">Today your fashion show</h1>
+        <p class="hero-text">Chào mừng bạn đến với <strong>Veltra Atelier</strong> – nơi mỗi bộ trang phục là
+        một buổi trình diễn của riêng bạn. Quần áo, giày dép, phụ kiện, mỹ phẩm và trang sức được chọn lọc
+        để bạn đẹp mỗi ngày mà vẫn luôn thoải mái.</p>
+      </section>
 
-        <section class="outfit">
-          <h2>Hôm nay mặc gì?</h2>
-          <p>Bấm nút để Veltra gợi ý cho bạn một bộ đồ.</p>
+      <!-- Hàng mới về -->
+      <section class="panel home-section" aria-labelledby="new-title">
+        <div class="shop-heading">
+          <h2 id="new-title" class="shop-title">Hàng mới về</h2>
+          <span class="shop-count">Bấm vào sản phẩm để xem voucher</span>
+        </div>
+        <div id="new-grid" class="product-grid"></div>
+      </section>
+
+      <!-- Gợi ý outfit -->
+      <section class="panel home-section outfit" aria-labelledby="outfit-title">
+        <div class="outfit-head">
+          <div>
+            <h2 id="outfit-title" class="shop-title">Hôm nay mặc gì?</h2>
+            <p>Bấm nút để Veltra phối cho bạn một bộ đồ từ các món đang bán.</p>
+          </div>
           <button id="outfit-button" class="btn-primary">✦ Gợi ý outfit</button>
-          <div id="outfit-result" class="outfit-result" aria-live="polite"></div>
-        </section>
-      </div>
+        </div>
+        <div id="outfit-result" class="outfit-result" aria-live="polite"></div>
+      </section>
     </main>
 
     <!-- ===== Cửa hàng: dùng chung cho mọi danh mục (Quần áo, Phụ kiện, ...) ===== -->
