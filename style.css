@@ -1,70 +1,416 @@
+/* =========================================================
+   Hahaha – style.css
+   ========================================================= */
+
+/* Bảng màu lấy theo bản thiết kế */
+:root {
+  --lime: #e9fcc8;        /* nền xanh chanh nhạt */
+  --lime-strong: #f4ffd9; /* mục menu đang chọn, voucher tốt nhất */
+  --forest: #053d29;      /* xanh rừng đậm (mảng tròn, ô sản phẩm) */
+  --green: #0b6e4f;       /* xanh lá của menu */
+  --gray: #cbd3dc;        /* xám của các khung */
+  --text: #12261d;
+  --radius: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: "Be Vietnam Pro", verdana, sans-serif;
-  /* nền chuyển màu pastel, từ từ "trôi" (xem @keyframes bg-move bên dưới) */
-  background: linear-gradient(135deg, #a5d8ff, #fcc2d7, #d0bfff, #a5d8ff);
-  background-size: 400% 400%;
-  animation: bg-move 5s ease infinite;
+  color: var(--text);
+  background-color: var(--lime);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Hai mảng tròn xanh đậm trang trí: góc trên trái và góc dưới phải */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  border-radius: 50%;
+  background-color: var(--forest);
+}
+
+body::before {
+  width: 360px;
+  height: 360px;
+  top: -140px;
+  left: -140px;
+}
+
+body::after {
+  width: 520px;
+  height: 520px;
+  right: -160px;
+  bottom: -200px;
+}
+
+/* ===== Khung trang: menu trái + nội dung ===== */
+.page {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
   min-height: 100vh;
 }
 
-h1 {
-  text-align: center;
-  font-size: clamp(32px, 7vw, 56px); /* chữ to trên máy tính, tự nhỏ lại trên điện thoại */
-  font-weight: 800;
-  margin: 0;
-  padding: 32px 16px 24px;
+/* ===== Menu bên trái ===== */
+.sidebar {
+  position: sticky;
+  top: 24px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 0;
+  background-color: var(--green);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 20px rgba(5, 61, 41, 0.3);
 }
 
-p {
+.logo {
+  font-family: "Gluten", cursive;
+  font-size: 28px;
+  color: white;
+}
+
+.avatar {
+  width: 96px;
+  height: 96px;
+  display: grid;
+  place-items: center;
+  font-size: 48px;
+  border-radius: 50%;
+  background-color: var(--gray);
+}
+
+.nav {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 12px;
+}
+
+.nav a {
+  display: block;
+  padding: 10px 14px;
+  margin-right: 12px;
+  border-radius: 10px;
+  background-color: var(--gray);
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.nav a:hover {
+  transform: translateX(4px);
+}
+
+/* Mục đang chọn: nền xanh chanh, kéo dài sát mép phải như bản vẽ */
+.nav a[aria-current="page"] {
+  background-color: var(--lime-strong);
+  margin-right: 0;
+  border-radius: 10px 0 0 10px;
+}
+
+/* ===== Cột nội dung ===== */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+/* Thanh tìm kiếm */
+.topbar input {
+  width: 100%;
+  padding: 14px 20px;
+  font: inherit;
+  font-size: 16px;
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-color: var(--gray);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.topbar input:focus {
+  border-color: var(--green);
+  background-color: white;
+}
+
+/* ===== Trang Quần áo: lưới sản phẩm + cột voucher ===== */
+.shop {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 24px;
+  align-items: start;
+}
+
+.product-panel {
+  padding: 16px;
+  background-color: var(--gray);
+  border-radius: var(--radius);
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  font: inherit;
+  text-align: left;
+  color: white;
+  background-color: var(--forest);
+  border: 4px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(5, 61, 41, 0.35);
+}
+
+/* Sản phẩm đang được chọn: viền xanh chanh */
+.product-card[aria-pressed="true"] {
+  border-color: #a9e34b;
+  box-shadow: 0 0 0 3px var(--forest), 0 8px 16px rgba(5, 61, 41, 0.35);
+}
+
+.product-card img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+
+.product-card .name {
+  padding: 10px 12px 2px;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.product-card .price {
+  padding: 0 12px 12px;
+  color: #c0eb75;
+  font-weight: 800;
+}
+
+.no-result {
+  text-align: center;
+  font-size: 18px;
+  margin: 24px 0;
+}
+
+/* Cột voucher bên phải */
+.voucher-panel {
+  position: sticky;
+  top: 24px;
+  padding: 20px 16px;
+  background-color: var(--gray);
+  border-radius: var(--radius);
+}
+
+.voucher-panel h2 {
+  margin: 0 0 12px;
   font-size: 20px;
 }
 
-
-/* Ngôi sao lấp lánh tạo bởi script.js */
-.sparkle {
-  position: fixed;
-  pointer-events: none; /* không chặn việc bấm vào chữ, nút bên dưới */
-  transform: translate(-50%, -50%);
-  animation: sparkle-fly 1s ease-out forwards;
+.voucher-hint {
+  margin: 0;
+  color: #3d4f45;
 }
 
-@keyframes sparkle-fly {
-  from {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1) rotate(0deg);
-  }
-  to {
-    opacity: 0;
-    /* bay lên trên và lệch sang trái/phải ngẫu nhiên (--dx) */
-    transform: translate(calc(-50% + var(--dx)), -150%) scale(0.3) rotate(180deg);
-  }
+.voucher-product {
+  margin: 0 0 16px;
+  font-weight: 700;
 }
 
-/* Người dùng bật "giảm chuyển động" trong hệ điều hành thì tắt hiệu ứng */
-@media (prefers-reduced-motion: reduce) {
-  .sparkle {
-    display: none;
-  }
+.voucher {
+  position: relative;
+  margin-bottom: 14px;
+  padding: 12px;
+  background-color: white;
+  border: 2px dashed var(--green);
+  border-radius: 12px;
 }
 
+.voucher.best {
+  border-style: solid;
+  background-color: var(--lime-strong);
+}
 
-/* Phần giới thiệu: ảnh + đoạn văn */
+.voucher .badge {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+  background-color: #e64980;
+  border-radius: 999px;
+}
+
+.voucher .code {
+  font-weight: 800;
+  color: var(--green);
+  letter-spacing: 1px;
+}
+
+.voucher .desc {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.voucher .final-price {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.voucher .final-price s {
+  color: #868e96;
+}
+
+.voucher .final-price strong {
+  color: #c92a2a;
+}
+
+.copy-button {
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+  background-color: var(--green);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.copy-button:hover {
+  background-color: var(--forest);
+}
+
+/* Trang "Sắp ra mắt" */
+.coming-soon {
+  display: grid;
+  place-items: center;
+  min-height: 300px;
+  padding: 24px;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  background-color: var(--gray);
+  border-radius: var(--radius);
+}
+
+.view[hidden] {
+  display: none;
+}
+
+/* ===== Trang chủ ===== */
+.site-title {
+  margin: 0;
+  padding: 16px 0 24px;
+  text-align: center;
+  font-family: "Gluten", cursive; /* font mềm như kẹo dẻo (Google Fonts) */
+  font-weight: 800;
+  font-size: clamp(32px, 6vw, 56px);
+  letter-spacing: 1px;
+  /* Viền trắng dày 6px (nhiều lớp bóng xếp thành 2 vòng tròn cho mịn)
+     + bóng xanh đậm mờ bên ngoài để chữ nổi trên nền */
+  text-shadow:
+    6px 0px 0 #fff,
+    5.5px 2.3px 0 #fff,
+    4.2px 4.2px 0 #fff,
+    2.3px 5.5px 0 #fff,
+    0px 6px 0 #fff,
+    -2.3px 5.5px 0 #fff,
+    -4.2px 4.2px 0 #fff,
+    -5.5px 2.3px 0 #fff,
+    -6px 0px 0 #fff,
+    -5.5px -2.3px 0 #fff,
+    -4.2px -4.2px 0 #fff,
+    -2.3px -5.5px 0 #fff,
+    0px -6px 0 #fff,
+    2.3px -5.5px 0 #fff,
+    4.2px -4.2px 0 #fff,
+    5.5px -2.3px 0 #fff,
+    3px 0px 0 #fff,
+    2.8px 1.1px 0 #fff,
+    2.1px 2.1px 0 #fff,
+    1.1px 2.8px 0 #fff,
+    0px 3px 0 #fff,
+    -1.1px 2.8px 0 #fff,
+    -2.1px 2.1px 0 #fff,
+    -2.8px 1.1px 0 #fff,
+    -3px 0px 0 #fff,
+    -2.8px -1.1px 0 #fff,
+    -2.1px -2.1px 0 #fff,
+    -1.1px -2.8px 0 #fff,
+    0px -3px 0 #fff,
+    1.1px -2.8px 0 #fff,
+    2.1px -2.1px 0 #fff,
+    2.8px -1.1px 0 #fff,
+    0 10px 16px rgba(5, 61, 41, 0.5);
+  /* Màu chữ đổi giữa các màu pastel, chu kỳ 5 giây */
+  animation: title-color 5s ease infinite;
+}
+
+@keyframes title-color {
+  0%   { color: #ffc078; } /* cam đào */
+  25%  { color: #8ce99a; } /* xanh bạc hà */
+  50%  { color: #ffd43b; } /* vàng kem */
+  75%  { color: #8ce99a; } /* xanh bạc hà */
+  100% { color: #ffc078; } /* quay lại cam đào */
+}
+
 .intro {
   max-width: 800px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 16px;
   text-align: center;
+  /* khung nền sáng để chữ không chìm vào mảng tròn xanh đậm */
+  background-color: rgba(244, 255, 217, 0.92);
+  border-radius: var(--radius);
+  animation: fade-up 0.8s ease-out both;
 }
 
 .intro img {
-  width: 100%;   /* ảnh co giãn theo màn hình, không tràn ra ngoài */
+  width: 100%;
   height: auto;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.intro img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 .intro p {
+  font-size: 18px;
   line-height: 1.6;
 }
 
@@ -73,6 +419,10 @@ p {
   color: #555;
 }
 
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 /* Tính năng "Hôm nay mặc gì?" */
 .outfit {
@@ -88,11 +438,13 @@ p {
 }
 
 #outfit-button {
+  font: inherit;
   font-size: 18px;
+  font-weight: 700;
   padding: 12px 24px;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(90deg, #ff6b6b, #ffa94d, #845ef7);
+  background: linear-gradient(90deg, #0b6e4f, #2f9e44, #74b816);
   color: white;
   cursor: pointer;
   transition: transform 0.15s;
@@ -121,10 +473,9 @@ p {
 
 .outfit-comment {
   font-weight: bold;
-  color: #845ef7;
+  color: var(--green);
 }
 
-/* Hiệu ứng nảy khi có gợi ý mới */
 .outfit-result.pop {
   animation: pop 0.4s ease-out;
 }
@@ -135,40 +486,14 @@ p {
   100% { transform: scale(1); }
 }
 
-
-/* ===== Trang trí nhỏ ===== */
-
-/* Nền chuyển màu trôi chậm */
-@keyframes bg-move {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Nội dung hiện dần lên khi mở trang */
-.intro {
-  animation: fade-up 0.8s ease-out both;
-}
-
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Ảnh phóng to nhẹ khi rê chuột */
-.intro img {
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-.intro img:hover {
-  transform: scale(1.03);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-}
-
-/* Footer với trái tim đập */
+/* ===== Footer ===== */
 .footer {
+  align-self: center;
+  margin-top: auto;
+  padding: 8px 16px;
+  background-color: rgba(244, 255, 217, 0.92);
+  border-radius: 999px;
   text-align: center;
-  padding: 24px 16px 32px;
   font-size: 14px;
   color: #444;
 }
@@ -186,74 +511,96 @@ p {
   45%      { transform: scale(1.2); }
 }
 
-/* Tắt các chuyển động trang trí nếu người xem bật "giảm chuyển động" */
-@media (prefers-reduced-motion: reduce) {
-  body, .intro, .heart {
-    animation: none;
+/* ===== Ngôi sao lấp lánh tạo bởi script.js ===== */
+.sparkle {
+  position: fixed;
+  z-index: 10;
+  pointer-events: none; /* không chặn việc bấm vào chữ, nút bên dưới */
+  transform: translate(-50%, -50%);
+  animation: sparkle-fly 1s ease-out forwards;
+}
+
+@keyframes sparkle-fly {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
   }
-  .intro img:hover {
-    transform: none;
+  to {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx)), -150%) scale(0.3) rotate(180deg);
   }
 }
 
-
-/* ===== Tiêu đề "Today your fashion show" ===== */
-.site-title {
-  font-family: "Gluten", cursive; /* font mềm như kẹo dẻo (Google Fonts) */
-  font-weight: 800;
-  letter-spacing: 1px;
-  /* Viền trắng dày 6px (vẽ bằng nhiều lớp bóng xếp thành vòng tròn cho mịn)
-     + bóng tím mờ bên ngoài để chữ nổi trên nền pastel */
-  text-shadow:
-    6px 0px 0 #fff,
-    5.5px 2.3px 0 #fff,
-    4.2px 4.2px 0 #fff,
-    2.3px 5.5px 0 #fff,
-    0px 6px 0 #fff,
-    -2.3px 5.5px 0 #fff,
-    -4.2px 4.2px 0 #fff,
-    -5.5px 2.3px 0 #fff,
-    -6px 0px 0 #fff,
-    -5.5px -2.3px 0 #fff,
-    -4.2px -4.2px 0 #fff,
-    -2.3px -5.5px 0 #fff,
-    -0px -6px 0 #fff,
-    2.3px -5.5px 0 #fff,
-    4.2px -4.2px 0 #fff,
-    5.5px -2.3px 0 #fff,
-    3px 0px 0 #fff,
-    2.8px 1.1px 0 #fff,
-    2.1px 2.1px 0 #fff,
-    1.1px 2.8px 0 #fff,
-    0px 3px 0 #fff,
-    -1.1px 2.8px 0 #fff,
-    -2.1px 2.1px 0 #fff,
-    -2.8px 1.1px 0 #fff,
-    -3px 0px 0 #fff,
-    -2.8px -1.1px 0 #fff,
-    -2.1px -2.1px 0 #fff,
-    -1.1px -2.8px 0 #fff,
-    -0px -3px 0 #fff,
-    1.1px -2.8px 0 #fff,
-    2.1px -2.1px 0 #fff,
-    2.8px -1.1px 0 #fff,
-    0 10px 16px rgba(76, 42, 133, 0.5);
-  /* Màu chữ đổi cùng nhịp với nền (bg-move, 5 giây),
-     luôn là màu pastel đối (bù) với màu nền lúc đó */
-  animation: title-color 5s ease infinite;
+/* ===== Màn hình vừa (tablet): cột voucher xuống dưới lưới ===== */
+@media (max-width: 1000px) {
+  .shop {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .voucher-panel {
+    position: static;
+  }
 }
 
-@keyframes title-color {
-  0%   { color: #ffc078; } /* nền xanh dương nhạt -> chữ cam đào */
-  25%  { color: #8ce99a; } /* nền hồng            -> chữ xanh bạc hà */
-  50%  { color: #ffd43b; } /* nền tím nhạt         -> chữ vàng kem */
-  75%  { color: #8ce99a; } /* nền hồng            -> chữ xanh bạc hà */
-  100% { color: #ffc078; } /* quay lại xanh dương -> cam đào */
+/* ===== Điện thoại: menu lên trên, lưới 2 cột ===== */
+@media (max-width: 700px) {
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    padding: 16px;
+  }
+  .sidebar {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px;
+  }
+  .avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+  }
+  .nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 0;
+  }
+  .nav a,
+  .nav a[aria-current="page"] {
+    margin: 0;
+    padding: 8px 12px;
+    border-radius: 10px;
+  }
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  body::after {
+    width: 300px;
+    height: 300px;
+  }
 }
 
+/* ===== Người xem bật "giảm chuyển động": tắt hiệu ứng ===== */
 @media (prefers-reduced-motion: reduce) {
   .site-title {
     animation: none;
     color: #ffc078;
+  }
+  .intro,
+  .heart,
+  .outfit-result.pop {
+    animation: none;
+  }
+  .intro img:hover,
+  .product-card:hover,
+  .nav a:hover {
+    transform: none;
+  }
+  .sparkle {
+    display: none;
   }
 }

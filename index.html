@@ -12,26 +12,72 @@
 </head>
 <body>
 
-<h1 class="site-title">Today your fashion show</h1>
-<main class="intro">
-  <img src="images/cua-hang.jpg" alt="Giá treo áo len và áo khoác tông màu be, nâu">
-  <p>Chào mừng bạn đến với <strong>Hahaha</strong> – nơi thời trang không cần quá nghiêm túc!
-  Chúng mình mang đến những chiếc áo len ấm áp, áo khoác dáng rộng và phụ kiện xinh xắn,
-  giúp bạn mặc đẹp mỗi ngày mà vẫn luôn thoải mái và vui vẻ.</p>
-  <p class="photo-credit">Ảnh: Unsplash</p>
+<div class="page">
 
-  <section class="outfit">
-    <h2>Hôm nay mặc gì? 🤔</h2>
-    <p>Bấm nút để Hahaha chọn giúp bạn một bộ đồ!</p>
-    <button id="outfit-button">✨ Gợi ý outfit</button>
-    <div id="outfit-result" class="outfit-result" aria-live="polite"></div>
-  </section>
-</main>
+  <!-- ===== Menu bên trái ===== -->
+  <aside class="sidebar">
+    <div class="logo">Hahaha</div>
+    <div class="avatar" aria-hidden="true">😎</div>
+    <nav class="nav" aria-label="Menu chính">
+      <a href="#trang-chu" data-view="trang-chu">Trang chủ</a>
+      <a href="#quan-ao" data-view="quan-ao">Quần áo</a>
+      <a href="#phu-kien" data-view="phu-kien">Phụ kiện</a>
+      <a href="#giay" data-view="giay">Giày</a>
+    </nav>
+  </aside>
 
-<footer class="footer">
-  Made with <span class="heart">❤</span> by Hahaha · © 2026
-</footer>
+  <div class="content">
 
+    <!-- ===== Thanh tìm kiếm phía trên ===== -->
+    <header class="topbar">
+      <input id="search" type="search" placeholder="🔍 Tìm sản phẩm... (ví dụ: áo khoác)" aria-label="Tìm sản phẩm">
+    </header>
+
+    <!-- ===== Trang chủ ===== -->
+    <main id="view-trang-chu" class="view">
+      <h1 class="site-title">Today your fashion show</h1>
+      <div class="intro">
+        <img src="images/cua-hang.jpg" alt="Giá treo áo len và áo khoác tông màu be, nâu">
+        <p>Chào mừng bạn đến với <strong>Hahaha</strong> – nơi thời trang không cần quá nghiêm túc!
+        Chúng mình mang đến những chiếc áo len ấm áp, áo khoác dáng rộng và phụ kiện xinh xắn,
+        giúp bạn mặc đẹp mỗi ngày mà vẫn luôn thoải mái và vui vẻ.</p>
+        <p class="photo-credit">Ảnh: Unsplash</p>
+
+        <section class="outfit">
+          <h2>Hôm nay mặc gì? 🤔</h2>
+          <p>Bấm nút để Hahaha chọn giúp bạn một bộ đồ!</p>
+          <button id="outfit-button">✨ Gợi ý outfit</button>
+          <div id="outfit-result" class="outfit-result" aria-live="polite"></div>
+        </section>
+      </div>
+    </main>
+
+    <!-- ===== Quần áo: lưới sản phẩm + cột voucher ===== -->
+    <main id="view-quan-ao" class="view shop" hidden>
+      <section class="product-panel" aria-label="Sản phẩm">
+        <div id="product-grid" class="product-grid"></div>
+        <p id="no-result" class="no-result" hidden>Không tìm thấy sản phẩm nào 😢</p>
+      </section>
+
+      <aside class="voucher-panel" aria-live="polite">
+        <h2>🎟️ Voucher</h2>
+        <div id="voucher-list"></div>
+      </aside>
+    </main>
+
+    <!-- ===== Phụ kiện & Giày: sắp ra mắt ===== -->
+    <main id="view-phu-kien" class="view coming-soon" hidden>
+      <p>👜 Phụ kiện đang được chuẩn bị, sắp ra mắt nhé!</p>
+    </main>
+    <main id="view-giay" class="view coming-soon" hidden>
+      <p>👟 Giày đang được chuẩn bị, sắp ra mắt nhé!</p>
+    </main>
+
+    <footer class="footer">
+      Made with <span class="heart">❤</span> by Hahaha · © 2026 · Ảnh: Unsplash
+    </footer>
+  </div>
+</div>
 
 </body>
 </html>
