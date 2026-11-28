@@ -30,14 +30,25 @@
     <a class="logo" href="#trang-chu">
       <img src="assets/logo/veltra-wordmark-light.svg" alt="Veltra Atelier" width="180" height="70">
     </a>
-    <div class="avatar">
-      <img src="assets/logo/veltra-monogram.svg" alt="" width="96" height="96">
-    </div>
+
+    <!-- Avatar hồ sơ người mua: bấm để đổi ảnh và tên -->
+    <button id="profile-button" class="avatar" aria-label="Hồ sơ của bạn" title="Hồ sơ của bạn">
+      <img id="avatar-img" alt="" hidden>
+      <svg id="avatar-default" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="24" r="12" fill="#053A2B"/>
+        <path d="M10 56c2-12 11-18 22-18s20 6 22 18" fill="#053A2B"/>
+      </svg>
+      <span class="avatar-edit" aria-hidden="true">✎</span>
+    </button>
+    <p class="greeting">Xin chào, <strong id="greeting-name">bạn</strong></p>
+
     <nav class="nav" aria-label="Menu chính">
       <a href="#trang-chu" data-view="trang-chu">Trang chủ</a>
       <a href="#quan-ao" data-view="quan-ao">Quần áo</a>
       <a href="#phu-kien" data-view="phu-kien">Phụ kiện</a>
       <a href="#giay-dep" data-view="giay-dep">Giày dép</a>
+      <a href="#my-pham" data-view="my-pham">Mỹ phẩm</a>
+      <a href="#trang-suc" data-view="trang-suc">Trang sức</a>
     </nav>
   </aside>
 
@@ -50,7 +61,7 @@
           <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/>
           <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
         </svg>
-        <input id="search" type="search" placeholder="Tìm sản phẩm... (ví dụ: áo khoác)" aria-label="Tìm sản phẩm">
+        <input id="search" type="search" placeholder="Tìm trong tất cả sản phẩm... (ví dụ: túi, son)" aria-label="Tìm sản phẩm">
       </label>
       <button id="cart-button" class="cart-button" aria-label="Giỏ hàng, 0 sản phẩm">
         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
@@ -62,13 +73,13 @@
     </header>
 
     <!-- ===== Trang chủ ===== -->
-    <main id="view-trang-chu" class="view">
+    <main id="view-home" class="view">
       <h1 class="site-title">Today your fashion show</h1>
       <div class="intro">
         <img src="images/cua-hang.jpg" alt="Giá treo áo len và áo khoác tông màu be, nâu">
         <p>Chào mừng bạn đến với <strong>Veltra Atelier</strong> – nơi mỗi bộ trang phục là một buổi trình diễn
-        của riêng bạn. Chúng mình chọn lọc những chiếc áo len ấm áp, áo khoác dáng rộng và phụ kiện tinh tế,
-        để bạn mặc đẹp mỗi ngày mà vẫn luôn thoải mái.</p>
+        của riêng bạn. Từ quần áo, giày dép, phụ kiện đến mỹ phẩm và trang sức, chúng mình chọn lọc
+        những món đồ tinh tế để bạn đẹp mỗi ngày mà vẫn luôn thoải mái.</p>
         <p class="photo-credit">Ảnh: Unsplash</p>
 
         <section class="outfit">
@@ -80,33 +91,22 @@
       </div>
     </main>
 
-    <!-- ===== Quần áo: lưới sản phẩm + cột phải ===== -->
-    <main id="view-quan-ao" class="view shop" hidden>
-      <section class="panel product-panel" aria-label="Sản phẩm">
+    <!-- ===== Cửa hàng: dùng chung cho mọi danh mục (Quần áo, Phụ kiện, ...) ===== -->
+    <main id="view-shop" class="view shop" hidden>
+      <section class="panel product-panel" aria-labelledby="shop-title">
+        <div class="shop-heading">
+          <h1 id="shop-title" class="shop-title">Quần áo</h1>
+          <span id="shop-count" class="shop-count"></span>
+        </div>
         <div id="product-grid" class="product-grid"></div>
         <p id="no-result" class="no-result" hidden>Không tìm thấy sản phẩm phù hợp.</p>
       </section>
 
       <div class="side-column">
-        <!-- Bộ lọc -->
+        <!-- Bộ lọc: các nhóm lọc thay đổi theo danh mục -->
         <form id="filter-form" class="panel filter-panel" aria-label="Bộ lọc">
           <h2>Bộ lọc</h2>
-
-          <fieldset>
-            <legend>Size</legend>
-            <div class="chips">
-              <label class="chip"><input type="checkbox" name="size" value="S"><span>S</span></label>
-              <label class="chip"><input type="checkbox" name="size" value="M"><span>M</span></label>
-              <label class="chip"><input type="checkbox" name="size" value="L"><span>L</span></label>
-              <label class="chip"><input type="checkbox" name="size" value="XL"><span>XL</span></label>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>Màu</legend>
-            <div id="color-options" class="chips"></div>
-          </fieldset>
-
+          <div id="filter-groups"></div>
           <div class="filter-actions">
             <button type="submit" class="btn-primary">Áp dụng</button>
             <button type="reset" class="btn-secondary">Xóa lọc</button>
@@ -121,14 +121,6 @@
       </div>
     </main>
 
-    <!-- ===== Phụ kiện & Giày dép: sắp ra mắt ===== -->
-    <main id="view-phu-kien" class="view coming-soon" hidden>
-      <p>Phụ kiện đang được chuẩn bị, sắp ra mắt nhé!</p>
-    </main>
-    <main id="view-giay-dep" class="view coming-soon" hidden>
-      <p>Giày dép đang được chuẩn bị, sắp ra mắt nhé!</p>
-    </main>
-
     <footer class="footer">
       Made with <span class="heart" aria-label="yêu thương">♥</span> by Veltra Atelier · © 2026 · Ảnh: Unsplash
     </footer>
@@ -136,10 +128,10 @@
 </div>
 
 <!-- ===== Giỏ hàng (cửa sổ bật lên) ===== -->
-<dialog id="cart-dialog" class="cart-dialog" aria-labelledby="cart-title">
-  <div class="cart-header">
+<dialog id="cart-dialog" class="dialog" aria-labelledby="cart-title">
+  <div class="dialog-header">
     <h2 id="cart-title">Giỏ hàng</h2>
-    <button id="cart-close" class="icon-button" aria-label="Đóng giỏ hàng">✕</button>
+    <button class="icon-button" data-close aria-label="Đóng giỏ hàng">✕</button>
   </div>
   <ul id="cart-items" class="cart-items"></ul>
   <p id="cart-empty" class="cart-empty">Giỏ hàng đang trống.</p>
@@ -147,6 +139,42 @@
     <span>Tổng cộng</span>
     <strong id="cart-total">0đ</strong>
   </div>
+</dialog>
+
+<!-- ===== Hồ sơ người mua (cửa sổ bật lên) ===== -->
+<dialog id="profile-dialog" class="dialog" aria-labelledby="profile-title">
+  <div class="dialog-header">
+    <h2 id="profile-title">Hồ sơ của bạn</h2>
+    <button class="icon-button" data-close aria-label="Đóng hồ sơ">✕</button>
+  </div>
+
+  <form id="profile-form" class="profile-form">
+    <div class="profile-photo">
+      <div class="avatar avatar-preview">
+        <img id="preview-img" alt="Ảnh đại diện" hidden>
+        <svg id="preview-default" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="24" r="12" fill="#053A2B"/>
+          <path d="M10 56c2-12 11-18 22-18s20 6 22 18" fill="#053A2B"/>
+        </svg>
+      </div>
+      <div class="photo-actions">
+        <label class="btn-secondary file-button">
+          Chọn ảnh
+          <input id="photo-input" type="file" accept="image/*">
+        </label>
+        <button id="photo-remove" type="button" class="btn-secondary">Xóa ảnh</button>
+      </div>
+    </div>
+
+    <label class="field">
+      <span>Tên hiển thị</span>
+      <input id="name-input" type="text" maxlength="30" placeholder="Ví dụ: Lan Anh" autocomplete="nickname">
+    </label>
+
+    <p class="profile-note">Ảnh và tên chỉ được lưu trên trình duyệt của bạn, không gửi đi đâu cả.</p>
+
+    <button type="submit" class="btn-primary">Lưu hồ sơ</button>
+  </form>
 </dialog>
 
 </body>
