@@ -265,14 +265,22 @@ function showView() {
     renderProducts();
   }
 
-  // Bấm "Quay lại": cuộn về đúng chỗ đang xem dở. Mở sản phẩm mới: lên đầu trang.
+  // Bấm "Quay lại": cuộn về đúng chỗ đang xem dở. Mọi lần chuyển trang khác: lên đầu trang.
   if (restoreScroll) {
     restoreScroll = false;
     window.scrollTo(0, scrollPositions[location.hash || "#trang-chu"] || 0);
-  } else if (product) {
+  } else {
     window.scrollTo(0, 0);
   }
 }
+
+// Bấm lại đúng trang đang mở (menu, logo...): địa chỉ không đổi -> cũng lên đầu trang
+document.addEventListener("click", (event) => {
+  const link = event.target.closest('a[href^="#"]');
+  if (link && link.getAttribute("href") === (location.hash || "#trang-chu")) {
+    window.scrollTo(0, 0);
+  }
+});
 
 
 // ===== Shop: ProductCard + SearchBar + FilterPanel =====
