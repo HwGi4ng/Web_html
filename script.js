@@ -1,7 +1,7 @@
 // =========================================================
 // Veltra Atelier – script.js
 // Các "component": Sparkle, Outfit, Router, Shop (ProductCard,
-// SearchBar, FilterPanel), VoucherPanel, Cart, Profile.
+// SearchBar, FilterPanel), Cart, Profile.
 // =========================================================
 
 
@@ -192,7 +192,6 @@ function valuesOf(product, key) {
 const viewHome = document.getElementById("view-home");
 const viewShop = document.getElementById("view-shop");
 let currentCategory = null;
-let pendingSelectId = null; // sản phẩm được bấm ở Trang chủ, sẽ chọn sẵn khi mở danh mục
 
 function showView() {
   const hash = location.hash.slice(1);
@@ -212,22 +211,9 @@ function showView() {
 
   if (category && category !== currentCategory) {
     currentCategory = category;
-    selectedId = null;
     activeFilter = {};
     renderFilters();
     renderProducts();
-    renderVouchers();
-  }
-
-  // Đến từ Trang chủ: chọn sẵn sản phẩm vừa bấm để hiện voucher
-  if (category && pendingSelectId) {
-    selectedId = pendingSelectId;
-    pendingSelectId = null;
-    searchInput.value = "";
-    renderProducts();
-    renderVouchers();
-    grid.querySelector(`.product-select[data-id="${selectedId}"]`)?.focus({ preventScroll: true });
-    revealVouchers();
   }
 }
 
@@ -242,7 +228,6 @@ const searchInput = document.getElementById("search");
 const filterForm = document.getElementById("filter-form");
 const filterGroups = document.getElementById("filter-groups");
 
-let selectedId = null; // sản phẩm đang chọn (để xem voucher)
 let activeFilter = {}; // bộ lọc đã "Áp dụng", ví dụ { sizes: ["M"], color: ["den"] }
 
 function optionLabel(key, value) {
@@ -279,12 +264,12 @@ function renderFilters() {
 
 function productCard(p) {
   return `
-    <article class="product-card${p.id === selectedId ? " selected" : ""}">
-      <button class="product-select" data-id="${p.id}" aria-pressed="${p.id === selectedId}">
+    <article class="product-card">
+      <div class="product-body">
         <img src="images/products/${p.id}.jpg" alt="${p.alt}" loading="lazy" width="400" height="400">
         <span class="name">${p.name}${p.isNew ? '<span class="tag">Mới</span>' : ""}</span>
         <span class="price">${formatPrice(p.price)}</span>
-      </button>
+      </div>
       <button class="add-to-cart" data-id="${p.id}" aria-label="Thêm ${p.name} vào giỏ">+</button>
     </article>`;
 }
@@ -318,18 +303,7 @@ function renderProducts() {
 
 grid.addEventListener("click", (event) => {
   const addButton = event.target.closest(".add-to-cart");
-  if (addButton) {
-    addToCart(addButton.dataset.id, addButton);
-    return;
-  }
-  const selectButton = event.target.closest(".product-select");
-  if (selectButton) {
-    selectedId = selectButton.dataset.id;
-    renderProducts();
-    renderVouchers();
-    grid.querySelector(`.product-select[data-id="${selectedId}"]`)?.focus({ preventScroll: true });
-    revealVouchers();
-  }
+  if (addButton) addToCart(addButton.dataset.id, addButton);
 });
 
 // Gõ tìm kiếm khi đang ở Trang chủ -> mở trang Quần áo để hiện kết quả
@@ -353,95 +327,6 @@ filterForm.addEventListener("submit", (event) => {
 filterForm.addEventListener("reset", () => {
   activeFilter = {};
   renderProducts();
-});
-
-
-// ===== VoucherPanel =====
-// appliesTo: sản phẩm nào dùng được; discount: số tiền được giảm
-
-const VOUCHERS = [
-  { code: "VELTRA10",  desc: "Giảm 10% cho mọi sản phẩm",                    appliesTo: () => true,                                         discount: (p) => Math.round(p.price * 0.1) },
-  { code: "NEW15",     desc: "Giảm 15% cho hàng mới về",                      appliesTo: (p) => p.isNew,                                     discount: (p) => Math.round(p.price * 0.15) },
-  { code: "AOKHOAC50", desc: "Giảm 50.000đ cho áo khoác",                     appliesTo: (p) => p.type === "khoac",                          discount: () => 50000 },
-  { code: "BASIC20",   desc: "Giảm 20% cho áo thun và sơ mi",                 appliesTo: (p) => p.type === "thun" || p.type === "somi",      discount: (p) => Math.round(p.price * 0.2) },
-  { code: "TUIXINH40", desc: "Giảm 40.000đ cho túi và balo",                  appliesTo: (p) => p.kind === "Túi",                            discount: () => 40000 },
-  { code: "GIAY80",    desc: "Giảm 80.000đ cho giày dép từ 700.000đ",         appliesTo: (p) => p.category === "giay-dep" && p.price >= 700000, discount: () => 80000 },
-  { code: "BEAUTY20",  desc: "Giảm 20% cho mỹ phẩm",                          appliesTo: (p) => p.category === "my-pham",                    discount: (p) => Math.round(p.price * 0.2) },
-  { code: "SHINE12",   desc: "Giảm 12% cho trang sức",                        appliesTo: (p) => p.category === "trang-suc",                  discount: (p) => Math.round(p.price * 0.12) },
-  { code: "FREESHIP",  desc: "Miễn phí giao hàng cho sản phẩm từ 300.000đ",   appliesTo: (p) => p.price >= 300000,                           discount: () => 0 },
-];
-
-const voucherList = document.getElementById("voucher-list");
-const voucherPanel = document.querySelector(".voucher-panel");
-const sideColumn = document.querySelector(".side-column");
-
-// Đưa người dùng tới phần Voucher sau khi chọn sản phẩm
-function revealVouchers() {
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  const behavior = reduceMotion ? "auto" : "smooth";
-
-  // Máy tính: cột phải dính cố định và tự cuộn bên trong -> trượt cột xuống Voucher.
-  // Điện thoại: cột phải nằm dưới lưới sản phẩm -> trượt cả trang xuống Voucher.
-  const isSticky = getComputedStyle(sideColumn).position === "sticky";
-  if (isSticky) {
-    sideColumn.scrollTo({ top: voucherPanel.offsetTop, behavior });
-  } else {
-    const top = voucherPanel.getBoundingClientRect().top + window.scrollY - 16;
-    window.scrollTo({ top, behavior });
-  }
-
-  // Nháy viền khung voucher để thu hút sự chú ý
-  voucherPanel.classList.remove("flash");
-  void voucherPanel.offsetWidth;
-  voucherPanel.classList.add("flash");
-}
-
-function renderVouchers() {
-  const product = findProduct(selectedId);
-
-  if (!product) {
-    voucherList.innerHTML = `<p class="voucher-hint">Bấm vào một sản phẩm để xem các voucher dùng được.</p>`;
-    return;
-  }
-
-  const usable = VOUCHERS.filter((v) => v.appliesTo(product)).sort(
-    (a, b) => b.discount(product) - a.discount(product)
-  );
-
-  const cards = usable
-    .map((v, index) => {
-      const off = v.discount(product);
-      const isBest = index === 0 && off > 0;
-      const priceLine =
-        off > 0
-          ? `Còn <strong>${formatPrice(product.price - off)}</strong> <s>${formatPrice(product.price)}</s>`
-          : `Giá giữ nguyên, miễn phí giao hàng`;
-      return `
-        <div class="voucher${isBest ? " best" : ""}">
-          ${isBest ? '<span class="badge">Tốt nhất</span>' : ""}
-          <div class="code">${v.code}</div>
-          <p class="desc">${v.desc}</p>
-          <p class="final-price">${priceLine}</p>
-          <button class="btn-primary copy-button" data-code="${v.code}">Copy mã</button>
-        </div>`;
-    })
-    .join("");
-
-  voucherList.innerHTML = `<p class="voucher-product">Cho: ${product.name}</p>${cards}`;
-}
-
-voucherList.addEventListener("click", (event) => {
-  const button = event.target.closest(".copy-button");
-  if (!button) return;
-  const code = button.dataset.code;
-  const copying = navigator.clipboard
-    ? navigator.clipboard.writeText(code)
-    : Promise.reject(new Error("no clipboard"));
-  copying
-    .then(() => (button.textContent = "Đã copy ✓"))
-    .catch(() => (button.textContent = "Mã: " + code))
-    .finally(() => setTimeout(() => (button.textContent = "Copy mã"), 1500));
 });
 
 
@@ -615,7 +500,7 @@ outfitButton.addEventListener("click", () => {
   outfitResult.classList.add("pop");
 });
 
-// Bấm trên Trang chủ: "+" thêm vào giỏ, bấm thẻ thì mở danh mục của món đó
+// Bấm trên Trang chủ: "+" thêm 1 món, "Thêm cả bộ" thêm cả outfit vào giỏ
 viewHome.addEventListener("click", (event) => {
   const addButton = event.target.closest(".add-to-cart");
   if (addButton) {
@@ -628,14 +513,6 @@ viewHome.addEventListener("click", (event) => {
     currentOutfit.forEach((p) => addToCart(p.id));
     outfitBuy.textContent = "Đã thêm cả bộ ✓";
     setTimeout(() => (outfitBuy.textContent = "Thêm cả bộ vào giỏ"), 1500);
-    return;
-  }
-
-  const selectButton = event.target.closest(".product-select");
-  if (selectButton) {
-    const product = findProduct(selectButton.dataset.id);
-    pendingSelectId = product.id;
-    location.hash = "#" + product.category;
   }
 });
 
