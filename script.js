@@ -379,12 +379,16 @@ const sideColumn = document.querySelector(".side-column");
 function revealVouchers() {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Màn hình nhỏ: cột voucher nằm dưới lưới -> trượt mượt xuống.
-  // Màn hình lớn: cột voucher luôn hiện bên phải (sticky) -> không cần cuộn.
+  const behavior = reduceMotion ? "auto" : "smooth";
+
+  // Máy tính: cột phải dính cố định và tự cuộn bên trong -> trượt cột xuống Voucher.
+  // Điện thoại: cột phải nằm dưới lưới sản phẩm -> trượt cả trang xuống Voucher.
   const isSticky = getComputedStyle(sideColumn).position === "sticky";
-  if (!isSticky) {
+  if (isSticky) {
+    sideColumn.scrollTo({ top: voucherPanel.offsetTop, behavior });
+  } else {
     const top = voucherPanel.getBoundingClientRect().top + window.scrollY - 16;
-    window.scrollTo({ top, behavior: reduceMotion ? "auto" : "smooth" });
+    window.scrollTo({ top, behavior });
   }
 
   // Nháy viền khung voucher để thu hút sự chú ý
