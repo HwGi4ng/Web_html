@@ -226,9 +226,8 @@ function showView() {
     searchInput.value = "";
     renderProducts();
     renderVouchers();
-    const card = grid.querySelector(`.product-select[data-id="${selectedId}"]`);
-    card?.focus({ preventScroll: true });
-    card?.scrollIntoView({ block: "center" });
+    grid.querySelector(`.product-select[data-id="${selectedId}"]`)?.focus({ preventScroll: true });
+    revealVouchers();
   }
 }
 
@@ -328,7 +327,8 @@ grid.addEventListener("click", (event) => {
     selectedId = selectButton.dataset.id;
     renderProducts();
     renderVouchers();
-    grid.querySelector(`.product-select[data-id="${selectedId}"]`)?.focus();
+    grid.querySelector(`.product-select[data-id="${selectedId}"]`)?.focus({ preventScroll: true });
+    revealVouchers();
   }
 });
 
@@ -372,6 +372,26 @@ const VOUCHERS = [
 ];
 
 const voucherList = document.getElementById("voucher-list");
+const voucherPanel = document.querySelector(".voucher-panel");
+const sideColumn = document.querySelector(".side-column");
+
+// Đưa người dùng tới phần Voucher sau khi chọn sản phẩm
+function revealVouchers() {
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Màn hình nhỏ: cột voucher nằm dưới lưới -> trượt mượt xuống.
+  // Màn hình lớn: cột voucher luôn hiện bên phải (sticky) -> không cần cuộn.
+  const isSticky = getComputedStyle(sideColumn).position === "sticky";
+  if (!isSticky) {
+    const top = voucherPanel.getBoundingClientRect().top + window.scrollY - 16;
+    window.scrollTo({ top, behavior: reduceMotion ? "auto" : "smooth" });
+  }
+
+  // Nháy viền khung voucher để thu hút sự chú ý
+  voucherPanel.classList.remove("flash");
+  void voucherPanel.offsetWidth;
+  voucherPanel.classList.add("flash");
+}
 
 function renderVouchers() {
   const product = findProduct(selectedId);
